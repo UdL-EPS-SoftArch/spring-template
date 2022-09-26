@@ -16,12 +16,20 @@ Backend for a circular economy Web application using Spring REST, HATEOAS, JPA, 
 
 ## Features per Stakeholder
 
-| USER                | ADMIN                |
-|---------------------|----------------------|
-| Register            |                      |
-| Login               |                      |
-| Logout              |                      |
-|                     |                      |
+| **ANONYMOUS**           | **USER**     | **SELLER**            | **BUYER**              | **ADMIN**          |
+|-------------------------|--------------|-----------------------|------------------------|--------------------|
+| Register                | Login        | Offer Product         | Request Product        | Delete Any Offer   |
+| List Product Requests   | Logout       | Edit Product Offer    | Edit Product Request   | Delete Any Request |
+| List Product Offers     | Profile      | Delete Product Offer  | Delete Product Request |                    |
+| Search Product Requests | List Ranked  | Sell Product          | Buy Product            |                    |
+| Search Product Offers   | Review User  | Counter Offer Product | Counter Offer Product  |                    |
+|                         | Message User | Exchange Products     |                        |                    |
+|                         |              | Offer Service         | Request Service        |                    |
+|                         |              | Edit Service Offer    | Edit Service Request   |                    |
+|                         |              | Delete Service Offer  | Delete Service Request |                    |
+|                         |              | Sell Service          | Buy Service            |                    |
+|                         |              | Counter Offer Service | Counter Offer Service  |                    |
+|                         |              | Confirm Sale?         | Confirm Purchase?      |                    |
 
 ## Entities Model
 
