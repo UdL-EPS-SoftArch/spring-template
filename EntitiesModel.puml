@@ -1,61 +1,60 @@
 @startuml
 
-class User {
-  username : String
-  password : String
-  email : String
-  tokens: Decimal
-}
-User "1" --left-- "*" Message : author <
-User "1" --down-- "*" Transaction : seller <
-User "1" --down-- "*" Transaction : buyer <
-
-class Offer {
+class Announcement {
     name: String
     description: String
     price: Decimal
 }
-Offer "0..1" --right-- "*" Transaction : about <
-Offer "1" --right-- "*" User : offerer >
-
-class CounterOffer extends Offer
-CounterOffer "*" ---- "1" Offer : counters >
-
-class ProductOffer extends Offer {}
-class ServiceOffer extends Offer {}
-
-class Request {
-    name: String
-    description: String
-    price: Decimal
-}
-Request "0..1" --down-- "*" Transaction : about <
-Request "1" --left-- "*" User : requester >
-
-class ProductRequest extends Request {}
-class ServiceRequest extends Request {}
 
 class Transaction {
     status: Enum
     when: DateTime
     price: Decimal
 }
-
+Transaction "0..1" --up-- "1" Announcement : about >
+Transaction "*" --down-- "1" User : seller >
+Transaction "*" --down-- "1" User : buyer >
 class Admin extends User {}
 
 class Message {
   when: DateTime
   text: String
 }
-Message "*" --right-- "1" Offer : for >
+Message "*" --up-- "1" Announcement : for >
+Message "*" --down-- "1" User : author >
+
+class User {
+  username : String
+  password : String
+  email : String
+  tokens: Decimal
+}
+
+class Offer extends Announcement
+Offer "*" --right-- "1" User : offerer >
+
+class CounterOffer extends Offer
+CounterOffer "*" --up-- "1" Offer : counters >
+
+class ProductOffer extends Offer {}
+class ServiceOffer extends Offer {}
+
+class Request extends Announcement
+Request "*" --left-- "1" User : requester >
+
+class ProductRequest extends Request {}
+class ServiceRequest extends Request {}
+
+class CounterRequest extends Request
+CounterRequest "*" --up-- "1" Request : counters >
 
 class Review {
     when: DateTime
     stars: Integer
     message: String
 }
-Review "*" --down-- "1" User : author >
-Review "*" --down-- "1" User : about >
+Review "*" --up-- "1" User : author >
+Review "*" --up-- "1" User : about >
 
 
 @enduml
