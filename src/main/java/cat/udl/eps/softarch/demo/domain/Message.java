@@ -1,8 +1,20 @@
 package cat.udl.eps.softarch.demo.domain;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.time.ZonedDateTime;
+@Entity
+@Data
+@EqualsAndHashCode
 
 public class Message {
-    DateTimeFormat when;
-    String text;
+
+    @Id
+    private String id;
+
+    private ZonedDateTime when;
+
+    private String text;
+
 }
