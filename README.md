@@ -33,5 +33,5 @@ Backend for a circular economy Web application using Spring REST, HATEOAS, JPA, 
 
 ## Entities Model
 
-![EntityModelsDiagram](http://www.plantuml.com/plantuml/svg/5Sqn3a8X303GtLFe0Q2xqtVucoOcFnu0IvKcK4XfOxoz_kcDRvcMrBpLmua5gsTohSTYDkOPGDCdljcAFtsIOXSZiOYzmIDVmthVmjPVTb4iqBx8YbwJXZGOMcA1LOoDQTvwfXh7lYma-UyF?v1)
+![EntityModelsDiagram](http://www.plantuml.com/plantuml/svg/5Sqn3a8X303GtLFe0Q2xqtVucoOcFnu0IvKcK4XfOxoz_kcDRvcMrBpLmua5gsTohSTYDkOPGDCdljcAFtsIOXSZiOYzmIDVmthVmjPVTb4iqBx8YbwJXZGOMcA1LOoDQTvwfXh7lYma-UyF?v3)
 
