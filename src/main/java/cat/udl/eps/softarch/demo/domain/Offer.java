@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-public abstract class Offer extends UriEntity<Long> {
+public class Offer extends UriEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

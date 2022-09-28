@@ -1,4 +1,4 @@
 package cat.udl.eps.softarch.demo.domain;
 
-public class ServiceOffer {
+public class ServiceOffer extends Offer {
 }
