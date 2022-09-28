@@ -22,8 +22,7 @@ import org.springframework.stereotype.Component;
 @RepositoryEventHandler
 public class OfferEventHandler {
 
-
-    final Logger logger = LoggerFactory.getLogger(User.class);
+    final Logger logger = LoggerFactory.getLogger(Offer.class);
 
     final OfferRepository offerRepository;
 
@@ -33,6 +32,7 @@ public class OfferEventHandler {
 
     @HandleBeforeCreate
     public void handleOfferPreCreate(Offer newOffer) {
+        assert newOffer.getId() != null;
         if(offerRepository.existsById(newOffer.getId())){
             throw new ForbiddenException();
         }
