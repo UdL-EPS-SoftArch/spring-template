@@ -20,17 +20,6 @@ public class MessageEventHandle {
     @HandleBeforeCreate
     public void handleMessagePreCreate(Message message){logger.info("Before creating: {}", message.toString());}
 
-    @HandleBeforeSave
-    public void handleMessagePreSave(Message message){
-        logger.info("Before updating: {}", message.toString());
-    }
-    @HandleAfterCreate
-    public void handleMessagePostCreate(Message message) {
-        logger.info("After creating: {}", message.toString());
-        messageRepository.save(message);
-
-    }
-
 
     @HandleAfterDelete
     public void handleMessagePostDelete(Message message) {
