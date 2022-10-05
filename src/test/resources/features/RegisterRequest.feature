@@ -12,8 +12,10 @@ Feature: Create a Request
 
   Background:
     Given There is a registered user with username "mama" and password "123" and email "cocina@lamama.com"
+    And Exists an offer with name "croquetas", price "50", description "croquetas caseras mu ricas de la mama" and offererUser "mama"
 
   Scenario:
     Given I login as "mama" with password "123"
-    When I create a new request with name "croquetas", price "50", description "croquetas caseras mu ricas de la mama" and requester "mama"
-    Then The response code is 201
+    And I find an offer with name "croquetas", price "50", description "croquetas caseras mu ricas de la mama" and offererUser "mama"
+    Then I create a request
+    And The response code is 201
