@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Offer extends UriEntity<Long> {
+public class Offer extends Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -24,9 +24,5 @@ public class Offer extends UriEntity<Long> {
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private User offererUser;
-
-    @OneToOne
-    @JsonIdentityReference(alwaysAsId = true)
-    private Announcement announcement;
 
 }
