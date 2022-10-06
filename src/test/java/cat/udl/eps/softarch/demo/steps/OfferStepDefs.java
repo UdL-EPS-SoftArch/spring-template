@@ -10,7 +10,9 @@ import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Optional;
 
 public class OfferStepDefs {
@@ -51,9 +53,18 @@ public class OfferStepDefs {
         Assert.assertEquals(price, String.valueOf(offer.getPrice()));
     }
 
+    @Transactional
     @And("a ZoneDateTime {string} and a offerer user {string}")
-    public void aZoneDateTimeAndAOffererUser(String dateTime, String offererUser) {
+    public void aZoneDateTimeAndAOffererUser(String dateTime, String offerer) {
+        Date expectedDate = new Date("01/02/2018");
+        offer.setDateTime(new Date(dateTime));
+        Optional<User> user = userRepository.findById(offerer);
+        user.ifPresent(value -> offer.setOfferer(value));
 
+        Assert.assertEquals(expectedDate, offer.getDateTime());
+        user.ifPresent(value -> Assert.assertEquals(value, offer.getOfferer()));
+
+        offerRepository.save(offer);
     }
 
     @And("After all the steps I can retrieve this offer using the name {string} and the offererUser {string}")

@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -19,7 +20,7 @@ public class Offer extends Announcement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private ZonedDateTime dateTime;
+    private Date dateTime;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
