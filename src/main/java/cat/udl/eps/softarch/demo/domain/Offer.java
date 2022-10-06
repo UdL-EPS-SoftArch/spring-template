@@ -23,6 +23,6 @@ public class Offer extends Announcement {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private User offererUser;
+    private User offerer;
 
 }

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Announcement {
+public class Announcement extends UriEntity<Long>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

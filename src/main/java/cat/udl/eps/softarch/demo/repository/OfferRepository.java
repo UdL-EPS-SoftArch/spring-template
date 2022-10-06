@@ -10,7 +10,7 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface OfferRepository extends PagingAndSortingRepository<Offer, Long> {
-    public boolean existsOfferByOffererUser(@Param("offererUser") Offer offer);
+    public boolean existsOfferByOfferer(@Param("offererUser") User username);
     //public List<Offer> findAnnouncementByDateTime(@Param("id") Announcement announcement);
 
 }
