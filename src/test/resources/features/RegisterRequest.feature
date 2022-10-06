@@ -10,12 +10,9 @@ Feature: Create a Request
     # Then Server responds with page containing "You are not logged in"
     # And There is "Log in" link available
 
-  Background:
-    Given There is a registered user with username "mama" and password "123" and email "cocina@lamama.com"
-    And Exists an offer with name "croquetas", price "50", description "croquetas caseras mu ricas de la mama" and offererUser "mama"
 
-  Scenario:
-    Given I login as "mama" with password "123"
-    And I find an offer with name "croquetas", price "50", description "croquetas caseras mu ricas de la mama" and offererUser "mama"
-    Then I create a request
-    And The response code is 201
+  Scenario: Create new request.
+    Given I login as "user" with password "password"
+    And There is an offer created
+    When I Create a new request
+    Then There is a request created

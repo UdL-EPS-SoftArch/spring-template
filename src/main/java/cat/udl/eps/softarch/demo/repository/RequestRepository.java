@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 
+@RepositoryRestResource
 public interface RequestRepository extends PagingAndSortingRepository<Request, Long> {
 
     List<Request> findById(@Param("id") long id);

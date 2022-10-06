@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class Announcement extends UriEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotEmpty
     @Length(min = 2, max = 24)
