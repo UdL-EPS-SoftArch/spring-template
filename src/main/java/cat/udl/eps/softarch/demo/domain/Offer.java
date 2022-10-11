@@ -16,9 +16,6 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Offer extends Announcement {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     private Date dateTime;
 

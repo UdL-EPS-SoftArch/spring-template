@@ -68,13 +68,14 @@ public class OfferStepDefs {
 
         Assert.assertEquals(expectedDate, offer.getDateTime());
         user.ifPresent(value -> Assert.assertEquals(value, offer.getOfferer()));
+        System.out.println(offer.getDateTime());
+        offerRepository.save(offer);
 
-        //offerRepository.save(offer);
         stepDefs.result = stepDefs.mockMvc.perform(
                         post("/offers")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(stepDefs.mapper.writeValueAsString(offer)
-                                ).accept(MediaType.APPLICATION_JSON)
+                                .content(stepDefs.mapper.writeValueAsString(offer))
+                                .accept(MediaType.APPLICATION_JSON)
                                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
     }
