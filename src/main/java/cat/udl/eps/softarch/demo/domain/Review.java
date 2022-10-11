@@ -1,13 +1,15 @@
 package cat.udl.eps.softarch.demo.domain;
 
-import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-import java.util.Date;
+import lombok.Data;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Data
@@ -16,13 +18,12 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotBlank
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private Date when;
+    private Date when = new Date();
 
-    @NotBlank
-    @Length(max = 5)
-    private int stars;
+    @NotNull(message = "You must to provide a number of stars in your review")
+    @Min(0)
+    @Max(5)
+    private Integer stars;
 
     @Length(max = 256)
     private String message;
