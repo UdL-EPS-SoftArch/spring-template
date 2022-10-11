@@ -19,6 +19,8 @@ import java.time.ZonedDateTime;
 import org.springframework.http.MediaType;
 
 
+import javax.transaction.Transactional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -31,6 +33,7 @@ public class RegisterRequestStepDefs {
     @Autowired
     private StepDefs stepDefs;
 
+    @Transactional
     @And("There is an offer created")
     public void thereIsAnOfferCreated() throws Exception {
         Offer offer = new Offer();
@@ -44,6 +47,8 @@ public class RegisterRequestStepDefs {
         mama.setPassword("password");
 
         offer.setOffererUser(mama);
+
+        offerRepository.save(offer);
 
         // Pruebas random
         long num = requestRepository.count();
@@ -61,9 +66,23 @@ public class RegisterRequestStepDefs {
         Assert.assertEquals(1, offerRepository.count());
     }
 
+
     @When("I Create a new request")
     public void iCreateANewRequest() throws Exception {
         Request request = new Request();
+
+        request.setName("croqueta");
+        request.setPrice(new BigDecimal(50));
+        request.setDescription("las croquestas mas ricas de la mama");
+
+        User nene = new User();
+        nene.setEmail("nene@cocina.casa");
+        nene.setUsername("nene");
+        nene.setPassword("password");
+
+        request.setRequester(nene);
+
+        requestRepository.save(request);
 
         stepDefs.result = stepDefs.mockMvc.perform(
                         post("/requests")

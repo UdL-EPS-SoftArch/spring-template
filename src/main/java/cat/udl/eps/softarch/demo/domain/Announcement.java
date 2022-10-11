@@ -25,7 +25,7 @@ public class Announcement extends UriEntity<Long> {
     @Length(min = 2, max = 24)
     private String name;
 
-    @NotEmpty
+//    @NotEmpty si no es string caca
     @DecimalMin(value = "0")
     private BigDecimal price;
 

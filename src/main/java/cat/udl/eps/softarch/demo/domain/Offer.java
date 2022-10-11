@@ -15,13 +15,13 @@ import java.time.ZonedDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Offer extends Announcement {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
     private ZonedDateTime dateTime;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
     private User offererUser;
 

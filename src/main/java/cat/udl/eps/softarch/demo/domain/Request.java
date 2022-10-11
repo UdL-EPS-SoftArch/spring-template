@@ -21,8 +21,8 @@ public class Request extends Announcement{
 
     private ZonedDateTime dateTime;
 
-    @NotEmpty
-    @ManyToOne
+//    @NotEmpty
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
     private User requester;
 }
