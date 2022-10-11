@@ -1,39 +1,38 @@
 package cat.udl.eps.softarch.demo.steps;
 
 import cat.udl.eps.softarch.demo.domain.Message;
-import cat.udl.eps.softarch.demo.domain.User;
 import cat.udl.eps.softarch.demo.repository.MessageRepository;
-import cat.udl.eps.softarch.demo.repository.UserRepository;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class MessageStepDefs {
-    @Autowired
-    private StepDefs stepDefs;
 
+    //private StepDefs stepDefs;
     @Autowired
     private MessageRepository messageRepository;
-    private UserRepository userRepository;
 
-    @Given("^I create message with id (\\d+)")
-    public void iCreateMessageWithId(Integer id){
-        Long ident = Long.valueOf(id);
-        Assert.assertFalse("Id \"" + id + "\"shouldn't exist",messageRepository.existsById(ident));
+
+    @Given("The message with id {long} doesn't exist")
+    public void theMessageWithIdDoesnTExist(long ident) {
+
+        Assert.assertFalse("Id \"" + ident + "\"shouldn't exist",messageRepository.existsById(ident));
+
     }
-    @When("I send the message whit id (\\d+) and the text \"([^\"]*)\"")
-    public void iSendTheMessageWhitIdAndTheText(Integer id, String text){
-        Message message = new Message();
-        Long ident = Long.valueOf(id);
 
+    @When("I send the message whit id {long} and text {string}")
+    public void iSendTheMessageWhitIdAndText(long ident, String text) {
         ZonedDateTime date = ZonedDateTime.now();
+        if(!messageRepository.existsById(ident)){
+            Message message = new Message();
 
-        message.setId(ident);
-        message.setWhen(date);
-        message.setText(text);
-
+            message.setWhen(date);
+            message.setText(text);
+            messageRepository.save(message);
+        }
     }
 }
