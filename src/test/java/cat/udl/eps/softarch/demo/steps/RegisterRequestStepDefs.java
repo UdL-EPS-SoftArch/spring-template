@@ -150,10 +150,13 @@ public class RegisterRequestStepDefs {
         request.setName(name);
         request.setPrice(new BigDecimal(price));
         request.setDescription(description);
+        //TODO: antes de crear el user, deberia buscar si existe
         User requester = new User();
         requester.setUsername(requesterName);
         requester.setPassword("password");
         requester.setEmail(requesterName + "@gmail.com");
+
+   //     request.setRequester(requester);
         //TODO: lo suyo seria que al hacer un When i create usar el perform porque uso el post, y cuando hay un Given there is, usar el save directamente a la DB
         requestRepository.save(request);
     }

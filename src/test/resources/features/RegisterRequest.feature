@@ -30,7 +30,7 @@ Feature: Create a Request
     Then The response code is 401
     And There are 0 request created
 
-  Scenario: I creaate new Request but it already exists
+  Scenario: I create new Request but it already exists
     Given I can login with username "user" and password "password"
     And The response code is 200
     And There is an offer created with name "croqueta2", price 100, description "le hago la competencia a la mama" and offerer named "Paco"
