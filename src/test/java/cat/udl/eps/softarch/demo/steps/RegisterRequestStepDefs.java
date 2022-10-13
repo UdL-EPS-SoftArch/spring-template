@@ -20,6 +20,8 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 import javax.transaction.Transactional;
@@ -38,6 +40,9 @@ public class RegisterRequestStepDefs {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AuthenticationStepDefs authenticationStepDefs;
 
     @Transactional
     @And("There is an offer created")
@@ -127,5 +132,60 @@ public class RegisterRequestStepDefs {
         offer.setOffererUser(offerer);
         offerRepository.save(offer);
         Assert.assertEquals(1, offerRepository.count());
+    }
+
+    @And("There are {int} offer created")
+    public void thereAreOfferCreated(int offersNum) {
+        Assert.assertEquals(offersNum, offerRepository.count());
+    }
+
+    @Then("There are {int} request created")
+    public void thereAreRequestCreated(int requestsNum) {
+        Assert.assertEquals(requestsNum, requestRepository.count());
+    }
+
+    @And("There is a request created with name {string}, price {int}, description {string} by {string}")
+    public void thereIsARequestCreatedWithNamePriceDescriptionBy(String name, int price, String description, String requesterName) {
+        Request request = new Request();
+        request.setName(name);
+        request.setPrice(new BigDecimal(price));
+        request.setDescription(description);
+        User requester = new User();
+        requester.setUsername(requesterName);
+        requester.setPassword("password");
+        requester.setEmail(requesterName + "@gmail.com");
+        //TODO: lo suyo seria que al hacer un When i create usar el perform porque uso el post, y cuando hay un Given there is, usar el save directamente a la DB
+        requestRepository.save(request);
+    }
+
+    private Request setRequestParams(String name, int price, String description) {
+        Request request = new Request();
+        request.setName(name);
+        request.setPrice(new BigDecimal(price));
+        request.setDescription(description);
+
+        String currentUsername = getCurrentUsername();
+        User requester = getCurrentUser(currentUsername);
+        request.setRequester(requester);
+
+        return request;
+    }
+
+    private User getCurrentUser(String username){
+        Optional<User> users = userRepository.findById(username);
+        return users.orElseGet(User::new);
+    }
+
+    private String getCurrentUsername() {
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //return authentication.getName();
+
+        return AuthenticationStepDefs.currentUsername;
+    }
+
+    @When("I Create a new request with name {string}, price {int}, description {string}")
+    public void iCreateANewRequestWithNamePriceDescription(String name, int price, String description) {
+        Request request = setRequestParams(name, price, description);
+        requestRepository.save(request);
     }
 }
