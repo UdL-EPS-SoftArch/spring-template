@@ -29,12 +29,12 @@ public class OfferEventHandler {
     public OfferEventHandler(OfferRepository offerRepository) {
         this.offerRepository = offerRepository;
     }
-
+/*
     @HandleBeforeCreate
     public void handleOfferPreCreate(Offer newOffer) {
         assert newOffer.getId() != null;
         if(offerRepository.existsById(newOffer.getId())){
             throw new ForbiddenException();
         }
-    }
+    }*/
 }

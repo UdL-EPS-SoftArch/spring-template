@@ -6,6 +6,7 @@ import cat.udl.eps.softarch.demo.domain.Request;
 import cat.udl.eps.softarch.demo.domain.User;
 import cat.udl.eps.softarch.demo.repository.OfferRepository;
 import cat.udl.eps.softarch.demo.repository.RequestRepository;
+import cat.udl.eps.softarch.demo.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.Optional;
+
 import org.springframework.http.MediaType;
 
 
@@ -33,6 +36,9 @@ public class RegisterRequestStepDefs {
     @Autowired
     private StepDefs stepDefs;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Transactional
     @And("There is an offer created")
     public void thereIsAnOfferCreated() throws Exception {
@@ -40,15 +46,22 @@ public class RegisterRequestStepDefs {
         offer.setName("croqueta");
         offer.setPrice(new BigDecimal(50));
         offer.setDescription("las croquestas mas ricas de la mama");
+/*
+        Optional<User> users = userRepository.findById("mama");
+        if(users.isPresent()) {
+            User mama = users.get();
+            offer.setOffererUser(mama);
+        }
+*/
 
         User mama = new User();
         mama.setEmail("mama@cocina.casa");
         mama.setUsername("mama");
         mama.setPassword("password");
 
-        offer.setOffererUser(mama);
 
-        offerRepository.save(offer);
+
+     //   offerRepository.save(offer);
 
         // Pruebas random
         long num = requestRepository.count();
@@ -82,7 +95,7 @@ public class RegisterRequestStepDefs {
 
         request.setRequester(nene);
 
-        requestRepository.save(request);
+        //requestRepository.save(request);
 
         stepDefs.result = stepDefs.mockMvc.perform(
                         post("/requests")

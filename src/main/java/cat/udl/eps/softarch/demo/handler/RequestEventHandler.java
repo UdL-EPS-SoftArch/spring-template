@@ -17,6 +17,7 @@ public class RequestEventHandler {
         this.requestRepository = requestRepository;
     }
 
+    /*
     @HandleBeforeCreate
     public void handleTransactionPreCreate(Request request) {
         assert request.getId() != null;
@@ -24,5 +25,5 @@ public class RequestEventHandler {
             throw new ForbiddenException();
         }
     }
-
+*/
 }

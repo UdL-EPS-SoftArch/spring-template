@@ -10,9 +10,14 @@ Feature: Create a Request
     # Then Server responds with page containing "You are not logged in"
     # And There is "Log in" link available
 
+  Background:
+  Given There is a registered user with username "user" and password "password" and email "user@sample.app"
 
   Scenario: Create new request.
-    Given I login as "user" with password "password"
+    Given I can login with username "user" and password "password"
+    And The response code is 200
     And There is an offer created
+    And The response code is 201
     When I Create a new request
     Then There is a request created
+    And The response code is 201
