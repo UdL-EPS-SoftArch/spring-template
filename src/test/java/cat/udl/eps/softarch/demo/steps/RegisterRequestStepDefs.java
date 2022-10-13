@@ -1,27 +1,21 @@
 package cat.udl.eps.softarch.demo.steps;
 
-import cat.udl.eps.softarch.demo.domain.Announcement;
 import cat.udl.eps.softarch.demo.domain.Offer;
 import cat.udl.eps.softarch.demo.domain.Request;
 import cat.udl.eps.softarch.demo.domain.User;
 import cat.udl.eps.softarch.demo.repository.OfferRepository;
 import cat.udl.eps.softarch.demo.repository.RequestRepository;
 import cat.udl.eps.softarch.demo.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.hibernate.internal.util.ZonedDateTimeComparator;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 
 import javax.transaction.Transactional;
@@ -150,15 +144,27 @@ public class RegisterRequestStepDefs {
         request.setName(name);
         request.setPrice(new BigDecimal(price));
         request.setDescription(description);
-        //TODO: antes de crear el user, deberia buscar si existe
-        User requester = new User();
-        requester.setUsername(requesterName);
-        requester.setPassword("password");
-        requester.setEmail(requesterName + "@gmail.com");
 
-   //     request.setRequester(requester);
-        //TODO: lo suyo seria que al hacer un When i create usar el perform porque uso el post, y cuando hay un Given there is, usar el save directamente a la DB
+
+
+        Optional<User> users = userRepository.findById(requesterName);
+        User requester;
+
+        if (users.isPresent()) {
+            requester = users.get();
+        } else {
+            requester = new User();
+            requester.setUsername(requesterName);
+            requester.setPassword("password");
+            requester.setEmail(requesterName + "@gmail.com");
+        }
+
+        request.setRequester(requester);
+//        requestRepository.
         requestRepository.save(request);
+
+        //TODO: lo suyo seria que al hacer un When i create usar el perform porque uso el post, y cuando hay un Given there is, usar el save directamente a la DB
+
     }
 
     private Request setRequestParams(String name, int price, String description) {
@@ -189,6 +195,7 @@ public class RegisterRequestStepDefs {
     @When("I Create a new request with name {string}, price {int}, description {string}")
     public void iCreateANewRequestWithNamePriceDescription(String name, int price, String description) {
         Request request = setRequestParams(name, price, description);
+
         requestRepository.save(request);
     }
 }
