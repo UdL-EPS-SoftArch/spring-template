@@ -112,4 +112,20 @@ public class RegisterRequestStepDefs {
     public void thereIsARequestCreated() {
         Assert.assertEquals(1, requestRepository.count());
     }
+
+
+    @And("There is an offer created with name {string}, price {int}, description {string} and offerer named {string}")
+    public void thereIsAnOfferCreatedWithNamePriceDescriptionAndOffererNamed(String name, int price, String description, String offererName) {
+        Offer offer = new Offer();
+        offer.setName(name);
+        offer.setPrice(new BigDecimal(price));
+        offer.setDescription(description);
+        User offerer = new User();
+        offerer.setUsername(offererName);
+        offerer.setPassword("password");
+        offerer.setEmail(offererName + "@gmail.com");
+        offer.setOffererUser(offerer);
+        offerRepository.save(offer);
+        Assert.assertEquals(1, offerRepository.count());
+    }
 }

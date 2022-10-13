@@ -13,11 +13,16 @@ Feature: Create a Request
   Background:
   Given There is a registered user with username "user" and password "password" and email "user@sample.app"
 
-  Scenario: Create new request.
+  Scenario: Create new request successfully.
     Given I can login with username "user" and password "password"
     And The response code is 200
     And There is an offer created
-    And The response code is 201
     When I Create a new request
     Then There is a request created
     And The response code is 201
+
+  Scenario: Create new Request but not logged in.
+    Given I'm not logged in
+    And There is an offer created with name "croqueta2", price 100, description "le hago la competencia a la mama" and offerer named "Paco"
+    When I Create a new request
+    Then The response code is 401
