@@ -6,6 +6,7 @@ import cat.udl.eps.softarch.demo.domain.User;
 import cat.udl.eps.softarch.demo.repository.OfferRepository;
 import cat.udl.eps.softarch.demo.repository.RequestRepository;
 import cat.udl.eps.softarch.demo.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,8 +21,10 @@ import org.springframework.http.MediaType;
 
 import javax.transaction.Transactional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RegisterRequestStepDefs {
 
@@ -59,8 +62,7 @@ public class RegisterRequestStepDefs {
         mama.setPassword("password");
 
 
-
-     //   offerRepository.save(offer);
+        //   offerRepository.save(offer);
 
         // Pruebas random
         long num = requestRepository.count();
@@ -103,6 +105,7 @@ public class RegisterRequestStepDefs {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+                //.andExpect(status().isUnauthorized());
 
 
     }
@@ -114,7 +117,7 @@ public class RegisterRequestStepDefs {
 
 
     @And("There is an offer created with name {string}, price {int}, description {string} and offerer named {string}")
-    public void thereIsAnOfferCreatedWithNamePriceDescriptionAndOffererNamed(String name, int price, String description, String offererName) {
+    public void thereIsAnOfferCreatedWithNamePriceDescriptionAndOffererNamed(String name, int price, String description, String offererName) throws Exception {
         Offer offer = new Offer();
         offer.setName(name);
         offer.setPrice(new BigDecimal(price));
@@ -124,7 +127,19 @@ public class RegisterRequestStepDefs {
         offerer.setPassword("password");
         offerer.setEmail(offererName + "@gmail.com");
         offer.setOffererUser(offerer);
+
+        //aqui uso el save porque ya existe en nuestro contexto
+//        stepDefs.result = stepDefs.mockMvc.perform(
+//          post("/offers")
+//                  .contentType(MediaType.APPLICATION_JSON)
+//                  .content(stepDefs.mapper.writeValueAsString(offer))
+//                  .accept(MediaType.APPLICATION_JSON)
+//                  .with(AuthenticationStepDefs.authenticate())
+//        ).andDo(print());
+
         offerRepository.save(offer);
+
+
         Assert.assertEquals(1, offerRepository.count());
     }
 
@@ -139,12 +154,11 @@ public class RegisterRequestStepDefs {
     }
 
     @And("There is a request created with name {string}, price {int}, description {string} by {string}")
-    public void thereIsARequestCreatedWithNamePriceDescriptionBy(String name, int price, String description, String requesterName) {
+    public void thereIsARequestCreatedWithNamePriceDescriptionBy(String name, int price, String description, String requesterName) throws Exception {
         Request request = new Request();
         request.setName(name);
         request.setPrice(new BigDecimal(price));
         request.setDescription(description);
-
 
 
         Optional<User> users = userRepository.findById(requesterName);
@@ -160,10 +174,18 @@ public class RegisterRequestStepDefs {
         }
 
         request.setRequester(requester);
-//        requestRepository.
-        requestRepository.save(request);
 
-        //TODO: lo suyo seria que al hacer un When i create usar el perform porque uso el post, y cuando hay un Given there is, usar el save directamente a la DB
+        stepDefs.result = stepDefs.mockMvc.perform(
+                        post("/requests")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(stepDefs.mapper.writeValueAsString(request))
+                                .accept(MediaType.APPLICATION_JSON)
+                                .with(AuthenticationStepDefs.authenticate())
+                ).andDo(print())
+                .andExpect(status().isCreated());
+
+//        requestRepository.save(request);
+
 
     }
 
@@ -180,7 +202,7 @@ public class RegisterRequestStepDefs {
         return request;
     }
 
-    private User getCurrentUser(String username){
+    private User getCurrentUser(String username) {
         Optional<User> users = userRepository.findById(username);
         return users.orElseGet(User::new);
     }
@@ -193,9 +215,21 @@ public class RegisterRequestStepDefs {
     }
 
     @When("I Create a new request with name {string}, price {int}, description {string}")
-    public void iCreateANewRequestWithNamePriceDescription(String name, int price, String description) {
+    public void iCreateANewRequestWithNamePriceDescription(String name, int price, String description) throws Exception {
         Request request = setRequestParams(name, price, description);
 
-        requestRepository.save(request);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                        post("/requests")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(stepDefs.mapper.writeValueAsString(request))
+                                .accept(MediaType.APPLICATION_JSON)
+                                .with(AuthenticationStepDefs.authenticate())
+                ).andDo(print());
+//                .andExpect(status().isUnauthorized());
+
+//        requestRepository.save(request);
+
+
     }
 }
