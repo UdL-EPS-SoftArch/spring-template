@@ -23,11 +23,10 @@ public class MessageStepDefs {
 
 
 
-    @And("The message with id {long} doesn't exist")
-    public void theMessageWithIdDoesntExist(long ident) {
-
-        Assert.assertFalse("Id \"" + ident + "\"shouldn't exist",messageRepository.existsById(ident));
-
+    @And("don't have any messages")
+    public void donTHaveAnyMessages() {
+        long messages = messageRepository.count();
+        assert messages == 0;
     }
 
 
@@ -46,4 +45,6 @@ public class MessageStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate())).andDo(print());
     }
+
+
 }

@@ -5,7 +5,7 @@ Feature: Message
 
   Scenario: Send message and logged
     Given I login as "demo" with password "password"
-    And The message with id 1 doesn't exist
+    And don't have any messages
     When I send the message with date "2022-04-12T12:08:23Z" and text "Hello"
 
 
