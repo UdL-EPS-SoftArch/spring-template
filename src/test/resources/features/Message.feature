@@ -6,7 +6,7 @@ Feature: Message
   Scenario: Send message and logged
     Given I login as "demo" with password "password"
     And The message with id 1 doesn't exist
-    When I send the message with date "12-04-2022 12:08:23" and text "Hello"
+    When I send the message with date "2022-04-12T12:08:23Z" and text "Hello"
 
 
 
