@@ -8,5 +8,4 @@ public class tab2kgwizApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(tab2kgwizApplication.class, args);
 	}
-
 }
