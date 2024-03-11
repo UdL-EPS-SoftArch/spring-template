@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Collection;
 
 @Entity
-@Table(name = "DemoUser") //Avoid collision with system table User
+@Table(name = "Tab2KgWizUser") //Avoid collision with system table User
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class User extends UriEntity<String> implements UserDetails {
@@ -47,14 +47,7 @@ public class User extends UriEntity<String> implements UserDetails {
 	}
 
 	@Override
-	public String getUsername() { return id; }
-
-	@Override
-	@JsonValue(value = false)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
-	}
+	public String getUsername() { return this.id; }
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -74,5 +67,12 @@ public class User extends UriEntity<String> implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	@JsonValue(value = false)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
 	}
 }
