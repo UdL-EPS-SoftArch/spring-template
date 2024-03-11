@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,8 +33,9 @@ public class Mapping extends UriEntity<Long> {
 
     private String fileFormat;
 
-    @Override
-    public Long getId() {
-        return null;
-    }
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private Provider providedBy;
+
+
 }
