@@ -11,6 +11,6 @@ import org.springframework.data.rest.core.config.Projection;
 public interface CustomMapping {
     Long getId();
     String getTitle();
-    @Value("#{target.providedBy.id}")
+    @Value("#{target.providedBy.username}")
     String getProvideBy();
 }
