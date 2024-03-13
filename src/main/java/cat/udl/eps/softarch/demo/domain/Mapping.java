@@ -35,5 +35,5 @@ public class Mapping extends UriEntity<Long> {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private Provider providedBy;
+    private Supplier providedBy;
 }

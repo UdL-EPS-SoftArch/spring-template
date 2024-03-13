@@ -13,11 +13,11 @@ import java.util.Collection;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Provider extends User {
+public class Supplier extends User {
     @Override
     @JsonValue(value = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_PROVIDER");
+        return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SUPPLIER");
     }
 }
