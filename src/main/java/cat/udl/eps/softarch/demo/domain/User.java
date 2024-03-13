@@ -27,7 +27,7 @@ public class User extends UriEntity<String> implements UserDetails {
 	public static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Id
-	private String id;
+	private String username;
 
 	@NotBlank
 	@Email
@@ -46,8 +46,8 @@ public class User extends UriEntity<String> implements UserDetails {
 		this.password = passwordEncoder.encode(this.password);
 	}
 
-	@Override
-	public String getUsername() { return this.id; }
+//	@Override
+//	public String getUsername() { return this.id; }
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -74,5 +74,10 @@ public class User extends UriEntity<String> implements UserDetails {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
+	}
+
+	@Override
+	public String getId() {
+		return this.username;
 	}
 }
