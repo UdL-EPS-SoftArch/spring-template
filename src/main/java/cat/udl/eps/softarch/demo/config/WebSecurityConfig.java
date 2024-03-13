@@ -30,6 +30,12 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/identity").authenticated()
                 .requestMatchers(HttpMethod.POST, "/users").anonymous()
                 .requestMatchers(HttpMethod.POST, "/users/*").denyAll()
+                .requestMatchers(HttpMethod.DELETE, "/providers/*").hasRole("PROVIDER")
+                .requestMatchers(HttpMethod.PATCH, "/providers/*").hasRole("PROVIDER")
+                .requestMatchers(HttpMethod.POST, "/providers").anonymous()
+                .requestMatchers(HttpMethod.POST, "/mappings").hasRole("PROVIDER")
+                .requestMatchers(HttpMethod.DELETE, "/mappings/*").hasRole("PROVIDER")
+                .requestMatchers(HttpMethod.PATCH, "/mappings/*").hasRole("PROVIDER")
                 .requestMatchers(HttpMethod.POST, "/**/*").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/**/*").authenticated()
                 .requestMatchers(HttpMethod.PATCH, "/**/*").authenticated()
@@ -38,7 +44,7 @@ public class WebSecurityConfig {
             .csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
-            .httpBasic((httpBasic) -> httpBasic.realmName("demo"));
+            .httpBasic((httpBasic) -> httpBasic.realmName("tab2kgwiz"));
         return http.build();
     }
 
