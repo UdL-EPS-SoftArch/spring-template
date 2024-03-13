@@ -33,3 +33,43 @@ Feature: Register a Supplier
     Then The response code is 400
     And The error message is "must not be blank"
     And It has not found a supplier with username "supplier"
+
+
+  Scenario: Register a supplier with an empty email
+    Given I'm not logged in
+    When I register a new supplier with username "supplier", email "" and password "password"
+    Then The response code is 400
+    And The error message is "must not be blank"
+    And It has not found a supplier with username "supplier"
+
+
+#  Scenario: Register a supplier with an empty username
+#    Given I'm not logged in
+#    When I register a new supplier with username "", email "supplier@sample.app" and password "password"
+#    Then The response code is 400
+#    And The error message is "must not be blank"
+
+
+  Scenario: Register provider with invalid email
+    Given I'm not logged in
+    When I register a new supplier with username "supplier", email "invalidEmail" and password "password"
+    Then The response code is 400
+    And The error message is "must be a well-formed email address"
+    And It has not found a supplier with username "supplier"
+
+
+  Scenario: Register a supplier with a password that is too short
+    Given I'm not logged in
+    When I register a new supplier with username "supplier", email "supplier@sample.app" and password "pass"
+    Then The response code is 400
+    And The error message is "length must be between 8 and 256"
+    And It has not found a supplier with username "supplier"
+
+
+  Scenario: Register a supplier with an existing email
+    Given There is a registered supplier with username "existingSupplier", email "supplier@sample.app" and password "existingSupplierPassword"
+    And I'm not logged in
+    When I register a new supplier with username "supplier", email "supplier@sample.app" and password "password"
+    Then The response code is 409
+    And I can login with username "existingSupplier" and password "existingSupplierPassword"
+    And I cannot login with username "supplier" and password "password"
