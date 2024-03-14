@@ -27,6 +27,7 @@ public class User extends UriEntity<String> implements UserDetails {
 	public static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Id
+//	@NotBlank
 	private String username;
 
 	@NotBlank
