@@ -1,7 +1,10 @@
 package cat.udl.eps.softarch.demo.steps;
 
 import cat.udl.eps.softarch.demo.domain.Supplier;
+import cat.udl.eps.softarch.demo.domain.User;
+
 import cat.udl.eps.softarch.demo.repository.SupplierRepository;
+import cat.udl.eps.softarch.demo.repository.UserRepository;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
