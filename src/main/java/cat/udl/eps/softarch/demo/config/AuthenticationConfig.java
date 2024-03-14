@@ -1,6 +1,8 @@
 package cat.udl.eps.softarch.demo.config;
 
 import cat.udl.eps.softarch.demo.domain.User;
+import cat.udl.eps.softarch.demo.repository.SupplierRepository;
+import cat.udl.eps.softarch.demo.domain.Supplier;
 import cat.udl.eps.softarch.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +18,13 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
   final BasicUserDetailsService basicUserDetailsService;
   final UserRepository userRepository;
 
-  public AuthenticationConfig(BasicUserDetailsService basicUserDetailsService, UserRepository userRepository) {
+  final SupplierRepository supplierRepository;
+
+  public AuthenticationConfig(BasicUserDetailsService basicUserDetailsService, UserRepository userRepository,
+                              SupplierRepository supplierRepository) {
     this.basicUserDetailsService = basicUserDetailsService;
     this.userRepository = userRepository;
+    this.supplierRepository = supplierRepository;
   }
 
   @Override
@@ -26,5 +32,24 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
     auth
         .userDetailsService(basicUserDetailsService)
         .passwordEncoder(User.passwordEncoder);
+
+
+    // Sample User
+    if (!userRepository.existsById("demo")) {
+      User user = new User();
+      user.setEmail("demo@sample.app");
+      user.setUsername("demo");
+      user.setPassword(defaultPassword);
+      user.encodePassword();
+      userRepository.save(user);
+    }
+
+//    if (!supplierRepository.existsById("supplierDemo")) {
+//      Supplier supplier = new Supplier();
+//      supplier.setEmail("supplierdemo@sample.app");
+//      supplier.setPassword(defaultPassword);
+//      supplier.encodePassword();
+//      supplierRepository.save(supplier);
+//    }
   }
 }
