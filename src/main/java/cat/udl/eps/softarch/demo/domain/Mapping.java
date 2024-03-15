@@ -20,13 +20,13 @@ public class Mapping extends UriEntity<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Title is mandatory")
     @Length(min = 1, max = 80)
     private String title;
 
-    @NotBlank
-    @Length(min = 1, max = 100)
-    private String fileName;
+//    @NotBlank
+//    @Length(min = 1, max = 100)
+//    private String fileName;
 
     @Size(max = fileSize)
     private String file;

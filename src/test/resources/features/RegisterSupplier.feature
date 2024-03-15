@@ -43,11 +43,11 @@ Feature: Register a Supplier
     And It has not found a supplier with username "supplier"
 
 
-#  Scenario: Register a supplier with an empty username
-#    Given I'm not logged in
-#    When I register a new supplier with username "", email "supplier@sample.app" and password "password"
-#    Then The response code is 400
-#    And The error message is "must not be blank"
+  Scenario: Register a supplier with an empty username
+    Given I'm not logged in
+    When I register a new supplier with username "", email "supplier@sample.app" and password "password"
+    Then The response code is 400
+    And The error message is "must not be blank"
 
 
   Scenario: Register provider with invalid email
