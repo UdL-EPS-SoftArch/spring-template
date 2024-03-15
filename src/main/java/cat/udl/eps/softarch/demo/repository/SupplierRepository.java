@@ -13,6 +13,4 @@ public interface SupplierRepository extends PagingAndSortingRepository<Supplier,
 
     List<Supplier> findByUsernameContaining(@Param("text") String text);
     Supplier findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
-
-//    void save(Provider provider);
 }
