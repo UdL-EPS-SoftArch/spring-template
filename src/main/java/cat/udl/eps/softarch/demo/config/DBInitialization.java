@@ -25,7 +25,6 @@ public class DBInitialization {
             User user = new User();
             user.setEmail("demo@sample.app");
             user.setUsername("demo");
-//            user.setId("demo");
             user.setPassword(defaultPassword);
             user.encodePassword();
             userRepository.save(user);

@@ -44,12 +44,13 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
       userRepository.save(user);
     }
 
-//    if (!supplierRepository.existsById("supplierDemo")) {
-//      Supplier supplier = new Supplier();
-//      supplier.setEmail("supplierdemo@sample.app");
-//      supplier.setPassword(defaultPassword);
-//      supplier.encodePassword();
-//      supplierRepository.save(supplier);
-//    }
+    if (!supplierRepository.existsById("supplierDemo")) {
+      Supplier supplier = new Supplier();
+      supplier.setUsername("supplierDemo");
+      supplier.setEmail("supplierdemo@sample.app");
+      supplier.setPassword(defaultPassword);
+      supplier.encodePassword();
+      supplierRepository.save(supplier);
+    }
   }
 }
