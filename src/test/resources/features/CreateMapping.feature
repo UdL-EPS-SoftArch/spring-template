@@ -17,3 +17,18 @@ Feature: Create a Mapping of the Data
     Then The response code is 400
     And The error message is "Invalid request content."
     And It has not been created a new mapping
+
+
+  Scenario: Create a mapping when not logged in
+    When I create a new mapping with name "Sample Mapping"
+    Then The response code is 401
+    And The error message is "Unauthorized"
+    And It has not been created a new mapping
+
+
+  Scenario: Create a mapping by a user
+    Given There is a registered user with username "user" and password "password" and email "user@sample.app"
+    And I can login with username "user" and password "password"
+    When I create a new mapping with name "Sample Mapping"
+    Then The response code is 403
+    And It has not been created a new mapping
