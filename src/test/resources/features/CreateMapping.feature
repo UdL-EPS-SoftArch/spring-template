@@ -8,4 +8,4 @@ Feature: Create a Mapping of the Data
     And I login as "supplier" with password "password"
     When I create a new mapping with name "Sample Mapping"
     Then The response code is 201
-#    And It has been created a new mapping with name "Sample Mapping" and is owned by "supplier"
+    And It has been created a new mapping with name "Sample Mapping" and is owned by "supplier"

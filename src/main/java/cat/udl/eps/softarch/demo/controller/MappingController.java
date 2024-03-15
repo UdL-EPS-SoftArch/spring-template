@@ -6,6 +6,7 @@ import cat.udl.eps.softarch.demo.exception.NotAuthorizedException;
 import cat.udl.eps.softarch.demo.exception.NotFoundException;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
@@ -66,4 +67,13 @@ public class MappingController {
         return resourceAssembler.toFullResource(mapping);
     }
 
+//
+//    @RequestMapping(value = "/mappings", method = RequestMethod.POST)
+//    @PostMapping
+//    public ResponseEntity<Mapping> createMapping(@RequestBody Mapping mapping) {
+//        System.out.println("!!!!" + mapping.toString());
+//        Mapping savedMapping = mappingRepository.save(mapping);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedMapping);
+//    }
 }
