@@ -5,6 +5,7 @@ import cat.udl.eps.softarch.demo.domain.User;
 import cat.udl.eps.softarch.demo.exception.NotAuthorizedException;
 import cat.udl.eps.softarch.demo.exception.NotFoundException;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -13,8 +14,13 @@ import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Method;
 import java.util.Optional;
 
 @RepositoryRestController
@@ -53,7 +59,8 @@ public class MappingController {
     @RequestMapping(value = "/mappings", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody PersistentEntityResource createMapping(PersistentEntityResourceAssembler resourceAssembler,
-                                                                @RequestBody Mapping mapping) {
+                                                                @RequestBody Mapping mapping) throws MethodArgumentNotValidException {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             throw new NotAuthorizedException();
@@ -63,17 +70,12 @@ public class MappingController {
 
         mapping.setProvidedBy(supplier);
 
-        mappingRepository.save(mapping);
+        try {
+            mapping = mappingRepository.save(mapping);
+        } catch (Exception e) {
+            throw new MethodArgumentNotValidException(null, new BeanPropertyBindingResult(mapping, "mapping"));
+        }
+
         return resourceAssembler.toFullResource(mapping);
     }
-
-//
-//    @RequestMapping(value = "/mappings", method = RequestMethod.POST)
-//    @PostMapping
-//    public ResponseEntity<Mapping> createMapping(@RequestBody Mapping mapping) {
-//        System.out.println("!!!!" + mapping.toString());
-//        Mapping savedMapping = mappingRepository.save(mapping);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedMapping);
-//    }
 }

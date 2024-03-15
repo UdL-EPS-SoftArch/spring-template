@@ -7,6 +7,7 @@ import cat.udl.eps.softarch.demo.repository.SupplierRepository;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -69,5 +70,10 @@ public class CreateMappingStepDefs {
                                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.id", is(expectedUsername)));
+    }
+
+    @And("It has not been created a new mapping")
+    public void itHasNotBeenCreatedANewMapping() {
+        Assert.assertEquals(0, mappingRepository.count());
     }
 }
