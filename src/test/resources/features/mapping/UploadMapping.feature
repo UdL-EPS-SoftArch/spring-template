@@ -9,7 +9,6 @@ Feature: Upload Mapping file
     And I create a new mapping with name "CEP-2021-S1-WEIGHT.csv"
     And It has been created a new mapping with name "CEP-2021-S1-WEIGHT.csv" and is owned by "supplier"
 
-
   Scenario: Supplier upload a mapping file
     Given I login as "supplier" with password "password"
     When I upload a mapping file with title "CEP-2021-S1-WEIGHT.csv"
