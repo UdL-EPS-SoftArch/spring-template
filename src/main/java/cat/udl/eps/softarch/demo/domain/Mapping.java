@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,8 +15,7 @@ import jakarta.validation.constraints.NotBlank;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Mapping extends UriEntity<Long> {
-    private static final int fileSize = 16 * 1024;
-
+    private static final int fileSize = 100 * 1024; // 100KB
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -28,8 +28,9 @@ public class Mapping extends UriEntity<Long> {
 //    @Length(min = 1, max = 100)
 //    private String fileName;
 
+    @Column(length = fileSize)
     @Size(max = fileSize)
-    private String file;
+    private String fileContent;
 
     private String fileFormat;
 
