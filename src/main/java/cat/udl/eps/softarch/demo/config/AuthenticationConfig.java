@@ -34,7 +34,7 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
         .passwordEncoder(User.passwordEncoder);
 
 
-    // Sample User
+    //Sample User
     if (!userRepository.existsById("demo")) {
       User user = new User();
       user.setEmail("demo@sample.app");
@@ -44,10 +44,10 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
       userRepository.save(user);
     }
 
-    if (!supplierRepository.existsById("supplierDemo")) {
+    if (!supplierRepository.existsById("demoSupplier")) {
       Supplier supplier = new Supplier();
-      supplier.setUsername("supplierDemo");
-      supplier.setEmail("supplierdemo@sample.app");
+      supplier.setUsername("demoSupplier");
+      supplier.setEmail("demoSupplier@sample.app");
       supplier.setPassword(defaultPassword);
       supplier.encodePassword();
       supplierRepository.save(supplier);
