@@ -31,30 +31,30 @@ public class MappingController {
         this.mappingRepository = mappingRepository;
     }
 
-//    @RequestMapping(value = "/mappings/{id}", method = RequestMethod.GET)
-//    public @ResponseBody PersistentEntityResource getMapping(PersistentEntityResourceAssembler resourceAssembler,
-//                                                             @PathVariable Long id) {
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication instanceof AnonymousAuthenticationToken) {
-//            throw new NotAuthorizedException();
-//        }
-//
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Optional<Mapping> mapping = mappingRepository.findById(id);
-//
-//        if (mapping.isEmpty()) {
-//            throw new NotFoundException();
-//        }
-//
-//        Mapping m = mapping.get();
-//
-//        if (m.getProvidedBy().getId().equals(user.getId())) {
-//            return resourceAssembler.toFullResource(m);
-//        } else {
-//            throw new NotAuthorizedException();
-//        }
-//    }
+    @RequestMapping(value = "/mappings/{id}", method = RequestMethod.GET)
+    public @ResponseBody PersistentEntityResource getMapping(PersistentEntityResourceAssembler resourceAssembler,
+                                                             @PathVariable Long id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            throw new NotAuthorizedException();
+        }
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Mapping> mapping = mappingRepository.findById(id);
+
+        if (mapping.isEmpty()) {
+            throw new NotFoundException();
+        }
+
+        Mapping m = mapping.get();
+
+        if (m.getProvidedBy().getId().equals(user.getId())) {
+            return resourceAssembler.toFullResource(m);
+        } else {
+            throw new NotAuthorizedException();
+        }
+    }
 
     @RequestMapping(value = "/mappings", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

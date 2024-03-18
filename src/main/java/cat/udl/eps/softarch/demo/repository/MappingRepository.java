@@ -16,6 +16,8 @@ import java.util.Optional;
 @RepositoryRestResource(excerptProjection = CustomMapping.class)
 public interface MappingRepository extends PagingAndSortingRepository<Mapping, Long>, CrudRepository<Mapping, Long>{
     List<Mapping> findByTitle(@Param("title") String title);
+
+    List<Mapping> findByTitleContaining(@Param("title") String title);
     @Override
     public Iterable<Mapping> findAll(Sort sort);
 
