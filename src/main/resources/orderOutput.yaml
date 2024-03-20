@@ -1,0 +1,11 @@
+---
+orderNo: "B-9910"
+date: "2019-04-18"
+customerName: "Customer, Jane"
+orderLines:
+- item: "Copper Wire (200ft)"
+  unitPrice: 50.67
+  dawkldna: 1
+- item: "Washers (1/4\")"
+  unitPrice: 0.15
+  dawkldna: 24

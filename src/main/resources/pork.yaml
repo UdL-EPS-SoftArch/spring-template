@@ -1,0 +1,21 @@
+&/yamlMappings/null uri: /yamlMappings/null
+prefixes:
+  ex: http://www.example.com/
+  e: http://myontology.com/
+mappings:
+  animalWeight:
+    sources:
+    - access: CEP-2021-S1-WEIGHT.csv
+      referenceFormulation: csv
+    s: ex:$(Animal ID)
+    po:
+    - p: a
+      o:
+        value: schema:Pork
+    - p: schema:date
+      o:
+        value: $(Date)
+    - p: ex:weight
+      o:
+        value: $(Weight)
+        datatype: xsd:integer

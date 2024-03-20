@@ -1,0 +1,20 @@
+prefixes:
+  ex: http://www.example.com/
+  e: http://myontology.com/
+
+mappings:
+  animalWeight:
+    sources:
+      - access: "CEP-2021-S1-WEIGHT.csv"
+        referenceFormulation: csv
+      - ["CEP-2021-S1-WEIGHT.csv~csv"]
+    s: ex:$(Animal ID)
+    po:
+      - [a, schema:Pork]
+      - p: schema:date
+        o:
+          value: $(Date)
+      - p: ex:weight
+        o:
+          value: $(Weight)
+          datatype: xsd:integer
