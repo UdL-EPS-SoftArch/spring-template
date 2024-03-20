@@ -37,4 +37,7 @@ public class Mapping extends UriEntity<Long> {
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Supplier providedBy;
+
+    @Size(max = fileSize)
+    private String yamlFile;
 }
