@@ -24,15 +24,18 @@ public class Mapping extends UriEntity<Long> {
     @Length(min = 1, max = 80)
     private String title;
 
-//    @NotBlank
-//    @Length(min = 1, max = 100)
-//    private String fileName;
+    @Length(min = 1, max = 100)
+    private String fileName;
 
     @Column(length = fileSize)
     @Size(max = fileSize)
     private String fileContent;
 
     private String fileFormat;
+
+    private String prefixesURIS;
+
+    private String mainOntology;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
