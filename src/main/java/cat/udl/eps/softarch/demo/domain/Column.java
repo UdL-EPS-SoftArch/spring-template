@@ -22,6 +22,11 @@ public class Column extends UriEntity<Long> {
     @NotBlank
     private String dataType;
 
+    private String ontologyURI;
+
+    private String ontologyType;
+
+
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Mapping columnBelongsTo;
