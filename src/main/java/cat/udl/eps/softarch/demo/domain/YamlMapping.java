@@ -16,7 +16,7 @@ import java.util.Map;
 //@Data
 //@EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class YamlMapping extends Mapping {
+public class YamlMapping {
 
     @JsonProperty
     private Map<String, String> prefixes;
@@ -37,6 +37,18 @@ public class YamlMapping extends Mapping {
 
     public void setExtendsOf(Mapping extendsOf) {
         this.extendsOf = extendsOf;
+    }
+
+    public Map<String, String> getPrefixes() {
+        return prefixes;
+    }
+
+    public Map<String, Mappings> getMappings() {
+        return mappings;
+    }
+
+    public Mapping getExtendsOf() {
+        return extendsOf;
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -61,6 +73,18 @@ public class YamlMapping extends Mapping {
         public void setPo(List<PredicateObject> po) {
             this.po = po;
         }
+
+        public List<Sources> getSources() {
+            return sources;
+        }
+
+        public String getS() {
+            return s;
+        }
+
+        public List<PredicateObject> getPo() {
+            return po;
+        }
     }
 
 
@@ -79,6 +103,14 @@ public class YamlMapping extends Mapping {
             this.o = o;
         }
 
+        public String getP() {
+            return p;
+        }
+
+        public PropertyValue getO() {
+            return o;
+        }
+
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -95,6 +127,14 @@ public class YamlMapping extends Mapping {
 
         public PropertyValue(String value) {
             this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getDatatype() {
+            return datatype;
         }
     }
 
