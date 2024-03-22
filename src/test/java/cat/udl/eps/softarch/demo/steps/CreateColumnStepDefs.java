@@ -37,12 +37,15 @@ public class CreateColumnStepDefs {
         this.columnRepository = columnRepository;
     }
 
-    @When("I create a new column with title {string} and data type {string} for the mapping {string}")
-    public void iCreateANewColumnWithTitleAndDescription(String title, String type, String mappingTitle) throws Throwable {
+    @When("I create a new column with title {string}, ontology uri {string}, ontology {string} and data type {string} for the mapping {string}")
+    public void iCreateANewColumnWithTitleAndDescription(String title, String ontologyURI, String ontologyType,
+                                                         String type, String mappingTitle) throws Throwable {
         Mapping mapping = mappingRepository.findByTitle(mappingTitle).get(0);
         Column column = new Column();
         column.setTitle(title);
         column.setDataType(type);
+        column.setOntologyURI(ontologyURI);
+        column.setOntologyType(ontologyType);
         column.setColumnBelongsTo(mapping);
 
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -54,8 +57,9 @@ public class CreateColumnStepDefs {
                 .andDo(print());
     }
 
-    @Then("It has been created a new column with title {string} and data type {string} for the mapping {string}")
-    public void itHasBeenCreatedANewColumnWithTitleAndDataTypeForTheMapping(String title, String type, String mappingTitle)
+    @Then("It has been created a new column with title {string}, ontology uri {string}, ontology {string} and data type {string} for the mapping {string}")
+    public void itHasBeenCreatedANewColumnWithTitleAndDataTypeForTheMapping(String title, String ontologyURI,
+                                                                            String ontologyType, String type, String mappingTitle)
             throws Throwable {
         Mapping mapping = mappingRepository.findByTitle(mappingTitle).get(0);
         Column column = columnRepository.findByTitleAndColumnBelongsTo(title, mapping);
@@ -66,6 +70,8 @@ public class CreateColumnStepDefs {
                                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.title", is(title)))
+                .andExpect(jsonPath("$.ontologyURI", is(ontologyURI)))
+                .andExpect(jsonPath("$.ontologyType", is(ontologyType)))
                 .andExpect(jsonPath("$.dataType", is(type)));
 
     }

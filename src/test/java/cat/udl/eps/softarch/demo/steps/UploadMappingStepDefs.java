@@ -73,4 +73,28 @@ public class UploadMappingStepDefs {
                 .andExpect(jsonPath("$.title", is(title)))
                 .andExpect(jsonPath("$.fileContent").value(mappingFile.getFileContent()));
     }
+
+    @When("I upload a mapping file with title {string} with prefixes {string} and main ontology {string}")
+    public void iUploadAMappingFileWithTitleWithPrefixes(String fileName, String prefixes, String mainOntology) throws Exception {
+        mappingFile = mappingRepository.findByTitleContaining(fileName).get(0);
+        Resource file = wac.getResource("classpath:" + fileName);
+
+        mappingFile.setFileName(fileName);
+        mappingFile.setFileFormat(fileName.substring(fileName.indexOf(".") + 1));
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        FileCopyUtils.copy(file.getInputStream(), output);
+        mappingFile.setFileContent(output.toString());
+        mappingFile.setPrefixesURIS(prefixes);
+        mappingFile.setMainOntology(mainOntology);
+        String message = stepDefs.mapper.writeValueAsString(mappingFile);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                        patch("/mappings/{id}", mappingFile == null ? 0 : mappingFile.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(message)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 }
