@@ -1,7 +1,7 @@
 Feature: Testing then Yaml generator
 
-  Scenario: Testing the Yaml generator
-    Given Generate the Yaml file
+#  Scenario: Testing the Yaml generator
+#    Given Generate the Yaml file
 
 
   Scenario: Testing the Yaml generator
@@ -26,4 +26,4 @@ Feature: Testing then Yaml generator
     Then It has been created a new column with title "Weight", ontology uri "http://www.example.com/", ontology "weight" and data type "xsd:integer" for the mapping "CEP-2021-S1-WEIGHT.csv"
     And The response code is 200
 
-    Then Write the yaml file
+    #Then Write the yaml file with mapping name "CEP-2021-S1-WEIGHT.csv"

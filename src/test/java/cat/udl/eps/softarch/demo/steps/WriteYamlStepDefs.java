@@ -5,6 +5,8 @@ import cat.udl.eps.softarch.demo.domain.YamlMapping;
 import cat.udl.eps.softarch.demo.repository.ColumnRepository;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
 import cat.udl.eps.softarch.demo.repository.SupplierRepository;
+import cat.udl.eps.softarch.demo.utils.ExternalCommandExecutor;
+import cat.udl.eps.softarch.demo.utils.YamlGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
@@ -97,68 +99,15 @@ public class WriteYamlStepDefs {
         mapper.writeValue(new File("src/main/resources/pork.yaml"), yamlMapping);
     }
 
-    @Then("Write the yaml file")
-    public void writeTheYamlFile() throws IOException {
-        Mapping mapping = mappingRepository.findByTitle("CEP-2021-S1-WEIGHT.csv").get(0);
+    @Then("Write the yaml file with mapping name {string}")
+    public void writeTheYamlFile(String mappingName) throws IOException, InterruptedException {
 
-        YamlMapping.Mappings yamlMappingsMap = new YamlMapping.Mappings();
+        YamlGenerator yamlGenerator = new YamlGenerator();
+        yamlGenerator.generateYaml(mappingRepository, columnRepository, mappingName);
 
-        Map<String, String> prefixes = new HashMap<>();
-
-        Map<String, String> prefixes4Factory = new HashMap<>();
-
-        ArrayList<String> prefixList = new ArrayList<>(Arrays.asList(mapping.getPrefixesURIS().split(",")));
-        AtomicInteger count = new AtomicInteger(1);
-
-        prefixList.forEach(prefix -> {
-            prefixes.put(prefix, "pre" + count);
-            prefixes4Factory.put("pre" + count, prefix);
-            count.getAndIncrement();
-        });
-
-        YamlMapping.Sources sources = new YamlMapping.Sources();
-        sources.setAccess(mapping.getFileName());
-        sources.setReferenceFormulation(mapping.getFileFormat());
-        yamlMappingsMap.setSources(List.of(sources));
-
-        ArrayList<YamlMapping.PredicateObject> poList = new ArrayList<>();
-
-        columnRepository.findByColumnBelongsTo(mapping).forEach(column -> {
-            if (column.getId() == 1) {
-                yamlMappingsMap.setS(prefixes.get(column.getOntologyURI()) + ":$(" + column.getTitle() + ")");
-                YamlMapping.PredicateObject po = new YamlMapping.PredicateObject();
-                po.setP("a");
-                po.setO(new YamlMapping.PropertyValue(column.getColumnBelongsTo().getMainOntology()));
-                poList.add(po);
-
-            } else {
-                YamlMapping.PredicateObject po = new YamlMapping.PredicateObject();
-                po.setP(prefixes.get(column.getOntologyURI()) + ":" + column.getOntologyType());
-                po.setO(new YamlMapping.PropertyValue("$(" + column.getTitle() + ")", column.getDataType()));
-                poList.add(po);
-
-            }
-        });
-        yamlMappingsMap.setPo(poList);
-
-        Map<String, YamlMapping.Mappings> mappings = new HashMap<>();
-        mappings.put(mapping.getTitle(), yamlMappingsMap);
-
-        YamlMapping yamlMapping = new YamlMapping();
-
-        yamlMapping.setPrefixes(prefixes4Factory);
-        yamlMapping.setMappings(mappings);
-
-        YAMLFactory yamlFactory = new YAMLFactory();
-
-        // Remove default quotes
-        yamlFactory.configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true);
-        // Remove --- from the start of the file
-        yamlFactory.configure(YAMLGenerator.Feature.WRITE_DOC_START_MARKER, false);
-
-        ObjectMapper mapper = new ObjectMapper(yamlFactory);
-        mapper.writeValue(new File("src/main/resources/porkDef.yaml"), yamlMapping);
-
+        ExternalCommandExecutor executor = new ExternalCommandExecutor();
+        executor.executeYARRRMLParser("", "");
+        //executor.executeRMLMapper("porkDef.rml.ttl");
 
     }
 }
