@@ -1,7 +1,7 @@
-Feature: Testing the Yaml generator
-    As a supplier
-    I want to test the Yaml generator
-    So that I can generate a yaml file with the mapping information
+Feature: Testing the Yaml generator and yarrrml parser with docker
+  As a supplier
+  I want to test the Yaml generator and yarrrml parser with docker
+  So that I can generate the yaml file for the mapping
 
   Scenario: Testing the Yaml generator
     Given There is a registered supplier with username "supplier", email "supplier@sample.app" and password "password"
@@ -26,3 +26,4 @@ Feature: Testing the Yaml generator
     And The response code is 200
 
     Then Write the yaml file with mapping name "CEP-2021-S1-WEIGHT.csv"
+    And Execute the yarrrml parser with the yaml file

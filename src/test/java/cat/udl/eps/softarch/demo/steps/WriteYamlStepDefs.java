@@ -10,6 +10,7 @@ import cat.udl.eps.softarch.demo.utils.YamlGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.MockMvc;
@@ -105,7 +106,6 @@ public class WriteYamlStepDefs {
         YamlGenerator yamlGenerator = new YamlGenerator();
         yamlGenerator.generateYaml(mappingRepository, columnRepository, mappingName);
 
-        ExternalCommandExecutor executor = new ExternalCommandExecutor();
-        executor.executeYARRRMLParser("", "");
     }
+
 }

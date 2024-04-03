@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ExternalCommandExecutor {
-    public void executeYARRRMLParser(String inputFileName, String outputFileName) throws IOException, InterruptedException {
+    public void executeYARRRMLParser() {
 
         ProcessBuilder builder1 = new ProcessBuilder("docker", "build", "-t", "yarrrmlmapper",
                 "C:\\\\Users\\\\Zihan\\\\Desktop\\\\TFG\\\\tab2kgwiz-api\\\\src\\\\main\\\\java\\\\cat\\\\udl\\\\eps\\\\softarch\\\\demo\\\\utils\\\\docker"); // Assuming Dockerfile is the name
