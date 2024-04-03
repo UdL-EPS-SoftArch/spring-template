@@ -5,6 +5,8 @@ import cat.udl.eps.softarch.demo.domain.User;
 
 import cat.udl.eps.softarch.demo.repository.SupplierRepository;
 import cat.udl.eps.softarch.demo.repository.UserRepository;
+import cat.udl.eps.softarch.demo.steps.AuthenticationStepDefs;
+import cat.udl.eps.softarch.demo.steps.StepDefs;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
