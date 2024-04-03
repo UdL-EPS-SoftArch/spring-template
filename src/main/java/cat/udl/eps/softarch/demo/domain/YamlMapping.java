@@ -12,9 +12,6 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 import java.util.Map;
 
-//@Entity
-//@Data
-//@EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class YamlMapping {
 
