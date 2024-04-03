@@ -5,53 +5,44 @@ import java.io.IOException;
 
 public class ExternalCommandExecutor {
     public void executeYARRRMLParser(String inputFileName, String outputFileName) throws IOException, InterruptedException {
-//        ProcessBuilder builder = new ProcessBuilder("docker", "build", "-t", "yarrrmlmapper",
-//                "C:\\Users\\Zihan\\Desktop\\TFG\\tab2kgwiz-api\\src\\main\\java\\cat\\udl\\eps\\softarch\\demo\\utils\\docker", "&&"
-//                ,"docker", "container", "run", "--rm", "--name", "yarrrmlmapper", "-v",
-//                "\"C:\\Users\\Zihan\\Desktop\\TFG\\tab2kgwiz-api\\src\\main\\resources\":/mnt/data", "yarrrmlmapper"
-//                , "mappings.yarrrml.yml");
-//
-//        // docker build -t yarrrmlmapper docker && docker container run --rm --name yarrrmlmapper -v "C:\Users\Zihan\Desktop\TFG\tab2kgwiz-api\src\main\resources":/mnt/data yarrrmlmapper mappings.yarrrml.yml --serialization turtle
-//
-//        Process process = builder.start();
-//        int exitCode = process.waitFor();
-//
-//        if (exitCode != 0) {
-//            throw new RuntimeException("YARRRML parser failed. Exit code: " + exitCode);
-//        }
 
         ProcessBuilder builder1 = new ProcessBuilder("docker", "build", "-t", "yarrrmlmapper",
-                "C:\\Users\\Zihan\\Desktop\\TFG\\tab2kgwiz-api\\src\\main\\java\\cat\\udl\\eps\\softarch\\demo\\utils\\docker");
-        Process process1 = builder1.start();
-        int exitCode1 = process1.waitFor();
-        if (exitCode1 != 0) {
-            throw new RuntimeException("Docker build failed. Exit code: " + exitCode1);
+                "C:\\\\Users\\\\Zihan\\\\Desktop\\\\TFG\\\\tab2kgwiz-api\\\\src\\\\main\\\\java\\\\cat\\\\udl\\\\eps\\\\softarch\\\\demo\\\\utils\\\\docker"); // Assuming Dockerfile is the name
+
+        try {
+            Process process = builder1.start();
+            process.waitFor(); // Wait for the build process to finish
+            int exitCode = process.exitValue();
+
+            if (exitCode == 0) {
+                System.out.println("Docker image built successfully!");
+            } else {
+                System.err.println("Error building Docker image. Exit code: " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
 
-        ProcessBuilder builder2 = new ProcessBuilder("docker", "container", "run", "--rm", "--name", "yarrrmlmapper", "-v",
-                "C:\\Users\\Zihan\\Desktop\\TFG\\tab2kgwiz-api\\src\\main\\resources:/mnt/data", "yarrrmlmapper",
-                "mappings.yarrrml.yml", "--serialization", "turtle");
-        Process process2 = builder2.start();
-        int exitCode2 = process2.waitFor();
-        if (exitCode2 != 0) {
-            throw new RuntimeException("YARRRML parser failed. Exit code: " + exitCode2);
-        }
-    }
+        ProcessBuilder builder2 = new ProcessBuilder("docker", "container", "run", "--rm", "--name", "yarrrmlmapper",
+                "-v", "C:\\Users\\Zihan\\Desktop\\TFG\\tab2kgwiz-api\\src\\main\\resources:/mnt/data",
+                "yarrrmlmapper", "mappings.yarrrml.yml");
 
-    public void executeRMLMapper(String outputFileName) throws IOException, InterruptedException {
-        //String inputPath = "/mnt/c/Users/Zihan/Desktop/TFG/tab2kgwiz-api/src/main/resources/" + outputFileName;
-//        ProcessBuilder builder = new ProcessBuilder("wsl", "java", "-jar",
-//                "/home/zihan/yarrrml/rmlmapper-6.5.1-r371-all.jar", "-m", inputPath, ">", "porkDefRmlOut.txt");
+        // Redirect standard output (STDOUT) to a file
+        builder2.redirectOutput(new File(
+                "C:\\Users\\Zihan\\Desktop\\TFG\\tab2kgwiz-api\\src\\main\\resources\\output.txt"));
 
-        ProcessBuilder builder = new ProcessBuilder("wsl", "java", "-jar",
-                "rmlmapper-6.5.1-r371-all.jar", "-m", outputFileName, ">", "porkDefRmlOut.txt");
+        try {
+            Process process = builder2.start();
+            process.waitFor(); // Wait for the container to finish
+            int exitCode = process.exitValue();
 
-        builder.directory(new File("/home/zihan/yarrrml/"));
-        Process process = builder.start();
-        int exitCode = process.waitFor();
-
-        if (exitCode != 0) {
-            throw new RuntimeException("RML mapper failed. Exit code: " + exitCode);
+            if (exitCode == 0) {
+                System.out.println("Docker container run successfully!");
+            } else {
+                System.err.println("Error running Docker container. Exit code: " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

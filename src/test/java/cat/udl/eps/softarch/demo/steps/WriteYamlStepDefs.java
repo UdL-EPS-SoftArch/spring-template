@@ -107,7 +107,5 @@ public class WriteYamlStepDefs {
 
         ExternalCommandExecutor executor = new ExternalCommandExecutor();
         executor.executeYARRRMLParser("", "");
-        //executor.executeRMLMapper("porkDef.rml.ttl");
-
     }
 }
