@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Collection;
 
 @Entity
-@Table(name = "Tab2KgWizUser") //Avoid collision with system table User
+@Table(name = "TAB2KGWIZ_USER") //Avoid collision with system table User
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class User extends UriEntity<String> implements UserDetails {
@@ -47,9 +47,6 @@ public class User extends UriEntity<String> implements UserDetails {
 	public void encodePassword() {
 		this.password = passwordEncoder.encode(this.password);
 	}
-
-//	@Override
-//	public String getUsername() { return this.id; }
 
 	@Override
 	public boolean isAccountNonExpired() {
