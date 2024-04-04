@@ -37,7 +37,7 @@ public class CreateMappingStepDefs {
 
         stepDefs.result = stepDefs.mockMvc.perform(
                         post("/mappings")
-                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .contentType(MediaType.APPLICATION_JSON)
                                 .content(stepDefs.mapper.writeValueAsString(mapping))
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(AuthenticationStepDefs.authenticate()))

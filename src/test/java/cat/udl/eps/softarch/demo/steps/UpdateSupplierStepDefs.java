@@ -36,7 +36,7 @@ public class UpdateSupplierStepDefs {
     public void iChangeTheEmailOfSupplierTo(String username, String email) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 patch("/suppliers/{username}", username)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content((new JSONObject().put("email", email)).toString())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate())

@@ -50,7 +50,7 @@ public class CreateColumnStepDefs {
 
         stepDefs.result = stepDefs.mockMvc.perform(
                         post("/columns")
-                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .contentType(MediaType.APPLICATION_JSON)
                                 .content(stepDefs.mapper.writeValueAsString(column))
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(AuthenticationStepDefs.authenticate()))

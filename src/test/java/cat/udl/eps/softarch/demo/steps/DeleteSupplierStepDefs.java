@@ -32,7 +32,7 @@ public class DeleteSupplierStepDefs {
     public void iDeleteTheSupplierWithUsername(String username) throws Exception {
         stepDefs.result = stepDefs.mockMvc.perform(
                         delete("/suppliers/{username}", username)
-                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
@@ -43,7 +43,7 @@ public class DeleteSupplierStepDefs {
     public void itDoesNotExistASupplierWithUsername(String username) throws Exception {
         stepDefs.result = stepDefs.mockMvc.perform(
                         get("/suppliers/{username}", username)
-                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
