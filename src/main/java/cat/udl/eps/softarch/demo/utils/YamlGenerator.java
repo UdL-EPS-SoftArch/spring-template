@@ -4,11 +4,9 @@ import cat.udl.eps.softarch.demo.domain.Mapping;
 import cat.udl.eps.softarch.demo.domain.YamlMapping;
 import cat.udl.eps.softarch.demo.repository.ColumnRepository;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
-import cat.udl.eps.softarch.demo.repository.SupplierRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
