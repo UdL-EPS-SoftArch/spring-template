@@ -1,6 +1,6 @@
 Feature: Retrieve Mapping
   In order to retrieve the mapping
-  As a user
+  As a supplier
   I want to be able to retrieve all the mapping or a specific mapping
 
   Scenario: User retrieves and list all the mappings
