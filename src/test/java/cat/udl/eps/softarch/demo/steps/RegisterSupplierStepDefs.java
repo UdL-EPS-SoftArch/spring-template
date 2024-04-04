@@ -63,7 +63,7 @@ public class RegisterSupplierStepDefs {
     public void thereIsNoRegisteredSupplierWithUsername(String username) {
         Assert.assertTrue("Supplier \""
                         +  username + "\"shouldn't exist",
-                supplierRepository.findByUsernameContaining(username).isEmpty()); ;
+                supplierRepository.findByUsernameContaining(username).isEmpty());
     }
 
     @And("It has not found a supplier with username {string}")

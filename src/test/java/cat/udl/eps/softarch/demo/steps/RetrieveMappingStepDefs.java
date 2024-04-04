@@ -55,7 +55,7 @@ public class RetrieveMappingStepDefs {
                 get("/mappings/" + id)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());;
+                .andDo(print());
     }
 
     @When("I list all the existing mapping with title containing {string}")
