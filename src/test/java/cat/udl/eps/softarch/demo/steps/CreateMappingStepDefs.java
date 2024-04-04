@@ -21,13 +21,9 @@ public class CreateMappingStepDefs {
     final StepDefs stepDefs;
     final MappingRepository mappingRepository;
 
-    final SupplierRepository supplierRepository;
-    private String newResourceUri;
-
-    public CreateMappingStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, SupplierRepository supplierRepository) {
+    public CreateMappingStepDefs(StepDefs stepDefs, MappingRepository mappingRepository) {
         this.stepDefs = stepDefs;
         this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
     }
 
     @When("I create a new mapping with name {string}")

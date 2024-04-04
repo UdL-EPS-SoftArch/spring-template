@@ -18,16 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RetrieveSupplierStepDefs {
     final StepDefs stepDefs;
-    final MappingRepository mappingRepository;
-    final SupplierRepository supplierRepository;
-
-    final UserRepository userRepository;
-
-    public RetrieveSupplierStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, SupplierRepository supplierRepository, UserRepository userRepository) {
+    public RetrieveSupplierStepDefs(StepDefs stepDefs) {
         this.stepDefs = stepDefs;
-        this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
-        this.userRepository = userRepository;
     }
 
     @When("I list all the existing suppliers")

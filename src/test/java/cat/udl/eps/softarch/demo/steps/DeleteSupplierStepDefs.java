@@ -16,16 +16,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DeleteSupplierStepDefs {
     final StepDefs stepDefs;
-    final MappingRepository mappingRepository;
-    final SupplierRepository supplierRepository;
 
-    final UserRepository userRepository;
-
-    public DeleteSupplierStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, SupplierRepository supplierRepository, UserRepository userRepository) {
+    public DeleteSupplierStepDefs(StepDefs stepDefs) {
         this.stepDefs = stepDefs;
-        this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
-        this.userRepository = userRepository;
     }
 
     @When("I delete the supplier with username {string}")

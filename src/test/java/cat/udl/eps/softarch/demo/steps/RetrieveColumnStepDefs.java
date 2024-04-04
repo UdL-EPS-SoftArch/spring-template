@@ -22,16 +22,11 @@ public class RetrieveColumnStepDefs {
     final StepDefs stepDefs;
     final MappingRepository mappingRepository;
 
-    final SupplierRepository supplierRepository;
-
     final ColumnRepository columnRepository;
-    private String newResourceUri;
 
-    public RetrieveColumnStepDefs(StepDefs stepDefs, MappingRepository mappingRepository,
-                                  SupplierRepository supplierRepository, ColumnRepository columnRepository) {
+    public RetrieveColumnStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, ColumnRepository columnRepository) {
         this.stepDefs = stepDefs;
         this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
         this.columnRepository = columnRepository;
     }
 

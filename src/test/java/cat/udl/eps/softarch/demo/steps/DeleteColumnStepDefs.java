@@ -15,14 +15,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 public class DeleteColumnStepDefs {
     final StepDefs stepDefs;
     final MappingRepository mappingRepository;
-    final SupplierRepository supplierRepository;
     final ColumnRepository columnRepository;
 
-    public DeleteColumnStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, SupplierRepository supplierRepository,
+    public DeleteColumnStepDefs(StepDefs stepDefs, MappingRepository mappingRepository,
                                 ColumnRepository columnRepository) {
         this.stepDefs = stepDefs;
         this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
         this.columnRepository = columnRepository;
     }
 
