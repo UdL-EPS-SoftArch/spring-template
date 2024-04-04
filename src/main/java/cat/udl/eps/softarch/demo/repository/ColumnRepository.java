@@ -17,10 +17,6 @@ import java.util.Optional;
 
 @RepositoryRestResource(excerptProjection = CustomMapping.class)
 public interface ColumnRepository extends PagingAndSortingRepository<Column, Long>, CrudRepository<Column, Long> {
-    List<Column> findByTitle(@Param("title") String title);
-
-    List<Column> findByTitleContaining(@Param("title") String title);
-
     @Override
     Iterable<Column> findAll(Sort sort);
 
