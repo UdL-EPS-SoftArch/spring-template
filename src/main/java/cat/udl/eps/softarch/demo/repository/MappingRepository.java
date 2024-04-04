@@ -19,10 +19,10 @@ public interface MappingRepository extends PagingAndSortingRepository<Mapping, L
 
     List<Mapping> findByTitleContaining(@Param("title") String title);
     @Override
-    public Iterable<Mapping> findAll(Sort sort);
+    Iterable<Mapping> findAll(Sort sort);
 
     @Override
-    public Page<Mapping> findAll(Pageable pageable);
+    Page<Mapping> findAll(Pageable pageable);
 
-    public Optional<Mapping> findById(Long id);
+    Optional<Mapping> findById(Long id);
 }

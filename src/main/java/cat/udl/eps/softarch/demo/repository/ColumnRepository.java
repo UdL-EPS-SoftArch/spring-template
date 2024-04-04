@@ -22,12 +22,12 @@ public interface ColumnRepository extends PagingAndSortingRepository<Column, Lon
     List<Column> findByTitleContaining(@Param("title") String title);
 
     @Override
-    public Iterable<Column> findAll(Sort sort);
+    Iterable<Column> findAll(Sort sort);
 
     @Override
-    public Page<Column> findAll(Pageable pageable);
+    Page<Column> findAll(Pageable pageable);
 
-    public Optional<Column> findById(Long id);
+    Optional<Column> findById(Long id);
 
     Column findByTitleAndColumnBelongsTo(String title, Mapping mapping);
 
