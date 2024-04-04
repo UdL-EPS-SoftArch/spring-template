@@ -24,6 +24,10 @@ public class SupplierEventHandler {
 
         Supplier curr_supplier = ((Supplier)authentication.getPrincipal());
 
+        if (curr_supplier.getId() == null) {
+            throw new ForbiddenException();
+        }
+
         if (!curr_supplier.getId().equals(supplier.getId())){
             throw new ForbiddenException();
         }
@@ -31,11 +35,15 @@ public class SupplierEventHandler {
 
     @HandleBeforeSave
     public void handleSupplierPreUpdate(Supplier supplier) {
-        logger.info("Before delete: {}", supplier.toString());
+        logger.info("Before save: {}", supplier.toString());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         logger.info("Username: {}", authentication.getAuthorities());
 
         Supplier curr_supplier = ((Supplier)authentication.getPrincipal());
+
+        if (curr_supplier.getId() == null) {
+            throw new ForbiddenException();
+        }
 
         if (!curr_supplier.getId().equals(supplier.getId())){
             throw new ForbiddenException();

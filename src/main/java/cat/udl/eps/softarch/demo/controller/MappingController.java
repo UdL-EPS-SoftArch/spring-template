@@ -45,6 +45,10 @@ public class MappingController {
 
         Mapping m = mapping.get();
 
+        if(m.getProvidedBy().getId() == null) {
+            throw new NotFoundException();
+        }
+
         if (m.getProvidedBy().getId().equals(user.getId())) {
             return resourceAssembler.toFullResource(m);
         } else {
