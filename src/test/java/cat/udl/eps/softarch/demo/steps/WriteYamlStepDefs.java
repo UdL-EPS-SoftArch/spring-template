@@ -101,7 +101,7 @@ public class WriteYamlStepDefs {
     }
 
     @Then("Write the yaml file with mapping name {string}")
-    public void writeTheYamlFile(String mappingName) throws IOException, InterruptedException {
+    public void writeTheYamlFile(String mappingName) throws IOException {
 
         YamlGenerator yamlGenerator = new YamlGenerator();
         yamlGenerator.generateYaml(mappingRepository, columnRepository, mappingName);
