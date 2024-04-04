@@ -18,16 +18,10 @@ public class UpdateColumnStepDefs {
     final StepDefs stepDefs;
     final MappingRepository mappingRepository;
 
-    final SupplierRepository supplierRepository;
-
     final ColumnRepository columnRepository;
-    private String newResourceUri;
-
-    public UpdateColumnStepDefs(StepDefs stepDefs, MappingRepository mappingRepository,
-                                SupplierRepository supplierRepository, ColumnRepository columnRepository) {
+    public UpdateColumnStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, ColumnRepository columnRepository) {
         this.stepDefs = stepDefs;
         this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
         this.columnRepository = columnRepository;
     }
 

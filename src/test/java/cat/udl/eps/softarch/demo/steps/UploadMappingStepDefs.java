@@ -23,15 +23,11 @@ public class UploadMappingStepDefs {
     final MappingRepository mappingRepository;
     final WebApplicationContext wac;
 
-    final SupplierRepository supplierRepository;
-
     public static Mapping mappingFile;
 
-    public UploadMappingStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, SupplierRepository supplierRepository
-            , WebApplicationContext wac) {
+    public UploadMappingStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, WebApplicationContext wac) {
         this.stepDefs = stepDefs;
         this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
         this.wac = wac;
     }
 

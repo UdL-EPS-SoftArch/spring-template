@@ -17,19 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UpdateSupplierStepDefs {
     final StepDefs stepDefs;
-    final MappingRepository mappingRepository;
-    final WebApplicationContext wac;
 
-    final SupplierRepository supplierRepository;
-
-    public static Mapping mappingFile;
-
-    public UpdateSupplierStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, SupplierRepository supplierRepository
-            , WebApplicationContext wac) {
+    public UpdateSupplierStepDefs(StepDefs stepDefs) {
         this.stepDefs = stepDefs;
-        this.mappingRepository = mappingRepository;
-        this.supplierRepository = supplierRepository;
-        this.wac = wac;
     }
 
     @When("I update the email of supplier {string} to {string}")

@@ -14,28 +14,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 
 public class WriteYamlAndExecuteParserStepDefs {
-    final StepDefs stepDefs;
-
-    protected MockMvc mockMvc;
-
-    protected ResultActions result;
-
-    final MappingRepository mappingRepository;
-    final WebApplicationContext wac;
-
-    final SupplierRepository supplierRepository;
-
-    final ColumnRepository columnRepository;
-
-    public static Mapping mappingFile;
-
-    public WriteYamlAndExecuteParserStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, WebApplicationContext wac, SupplierRepository supplierRepository, ColumnRepository columnRepository) {
-        this.stepDefs = stepDefs;
-        this.mappingRepository = mappingRepository;
-        this.wac = wac;
-        this.supplierRepository = supplierRepository;
-        this.columnRepository = columnRepository;
-    }
 
     @Then("Execute the yarrrml parser with the yaml file")
     public void writeTheYamlFile() {

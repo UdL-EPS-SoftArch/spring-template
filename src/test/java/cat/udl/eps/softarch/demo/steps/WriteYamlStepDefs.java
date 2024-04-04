@@ -26,26 +26,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class WriteYamlStepDefs {
-    final StepDefs stepDefs;
-
-    protected MockMvc mockMvc;
-
-    protected ResultActions result;
-
     final MappingRepository mappingRepository;
-    final WebApplicationContext wac;
-
-    final SupplierRepository supplierRepository;
-
     final ColumnRepository columnRepository;
 
-    public static Mapping mappingFile;
 
-    public WriteYamlStepDefs(StepDefs stepDefs, MappingRepository mappingRepository, WebApplicationContext wac, SupplierRepository supplierRepository, ColumnRepository columnRepository) {
-        this.stepDefs = stepDefs;
+    public WriteYamlStepDefs(MappingRepository mappingRepository, ColumnRepository columnRepository) {
         this.mappingRepository = mappingRepository;
-        this.wac = wac;
-        this.supplierRepository = supplierRepository;
         this.columnRepository = columnRepository;
     }
 
