@@ -29,7 +29,7 @@ public interface ColumnRepository extends PagingAndSortingRepository<Column, Lon
 
     public Optional<Column> findById(Long id);
 
-    Column findByTitleAndColumnBelongsTo(String title, Mapping mappingTitle);
+    Column findByTitleAndColumnBelongsTo(String title, Mapping mapping);
 
     List<Column> findByColumnBelongsTo(Mapping mapping);
 }
