@@ -1,29 +1,18 @@
 package cat.udl.eps.softarch.demo.steps;
 
-import cat.udl.eps.softarch.demo.domain.Mapping;
 import cat.udl.eps.softarch.demo.domain.YamlMapping;
 import cat.udl.eps.softarch.demo.repository.ColumnRepository;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
-import cat.udl.eps.softarch.demo.repository.SupplierRepository;
-import cat.udl.eps.softarch.demo.utils.ExternalCommandExecutor;
 import cat.udl.eps.softarch.demo.utils.YamlGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class WriteYamlStepDefs {
     final MappingRepository mappingRepository;

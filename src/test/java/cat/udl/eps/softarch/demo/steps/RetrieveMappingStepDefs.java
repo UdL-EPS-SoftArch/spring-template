@@ -1,7 +1,6 @@
 package cat.udl.eps.softarch.demo.steps;
 
 import cat.udl.eps.softarch.demo.domain.Mapping;
-import cat.udl.eps.softarch.demo.domain.Supplier;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
 import cat.udl.eps.softarch.demo.repository.SupplierRepository;
 import io.cucumber.java.en.And;

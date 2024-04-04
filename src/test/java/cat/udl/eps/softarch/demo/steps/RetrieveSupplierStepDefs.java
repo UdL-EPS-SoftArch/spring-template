@@ -1,16 +1,9 @@
 package cat.udl.eps.softarch.demo.steps;
 
-import cat.udl.eps.softarch.demo.domain.Mapping;
-import cat.udl.eps.softarch.demo.repository.MappingRepository;
-import cat.udl.eps.softarch.demo.repository.SupplierRepository;
-import cat.udl.eps.softarch.demo.repository.UserRepository;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultMatcher;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

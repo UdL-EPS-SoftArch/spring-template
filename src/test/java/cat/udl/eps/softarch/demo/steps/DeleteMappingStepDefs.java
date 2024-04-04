@@ -2,7 +2,6 @@ package cat.udl.eps.softarch.demo.steps;
 
 import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 

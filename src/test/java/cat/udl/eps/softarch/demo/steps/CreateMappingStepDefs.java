@@ -1,15 +1,12 @@
 package cat.udl.eps.softarch.demo.steps;
 
 import cat.udl.eps.softarch.demo.domain.Mapping;
-import cat.udl.eps.softarch.demo.domain.Supplier;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
-import cat.udl.eps.softarch.demo.repository.SupplierRepository;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

@@ -4,17 +4,11 @@ import cat.udl.eps.softarch.demo.domain.Column;
 import cat.udl.eps.softarch.demo.domain.Mapping;
 import cat.udl.eps.softarch.demo.repository.ColumnRepository;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
-import cat.udl.eps.softarch.demo.repository.SupplierRepository;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 

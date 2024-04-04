@@ -4,8 +4,6 @@ import cat.udl.eps.softarch.demo.domain.Column;
 import cat.udl.eps.softarch.demo.domain.Mapping;
 import cat.udl.eps.softarch.demo.repository.ColumnRepository;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
-import cat.udl.eps.softarch.demo.repository.SupplierRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
 

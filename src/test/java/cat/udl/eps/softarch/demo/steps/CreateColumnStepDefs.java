@@ -4,16 +4,9 @@ import cat.udl.eps.softarch.demo.domain.Column;
 import cat.udl.eps.softarch.demo.domain.Mapping;
 import cat.udl.eps.softarch.demo.repository.ColumnRepository;
 import cat.udl.eps.softarch.demo.repository.MappingRepository;
-import cat.udl.eps.softarch.demo.repository.SupplierRepository;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.io.ByteArrayOutputStream;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
