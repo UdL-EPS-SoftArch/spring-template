@@ -10,9 +10,6 @@ import org.atteo.evo.inflector.English;
 import org.springframework.data.domain.Persistable;
 import org.springframework.util.StringUtils;
 
-/**
- * Created by http://rhizomik.net/~roberto/
- */
 @MappedSuperclass
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 public abstract class UriEntity<ID extends Serializable> implements Persistable<ID> {
