@@ -8,11 +8,8 @@ import org.springframework.context.annotation.Profile;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-/**
- * Created by http://rhizomik.net/~roberto/
- */
 @Configuration
-@Profile("flyio")
+@Profile("postgres")
 public class DatabaseConfig {
     @Bean
     public DataSource dataSource() throws URISyntaxException {
