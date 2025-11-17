@@ -1,21 +1,29 @@
 package cat.udl.eps.softarch.demo.config;
+import cat.udl.eps.softarch.demo.domain.Record;
 import cat.udl.eps.softarch.demo.domain.User;
+import cat.udl.eps.softarch.demo.repository.RecordRepository;
 import cat.udl.eps.softarch.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import jakarta.annotation.PostConstruct;
+
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 
 @Configuration
 public class DBInitialization {
     @Value("${default-password}")
     String defaultPassword;
+
     @Value("${spring.profiles.active:}")
     private String activeProfiles;
+
+    private final RecordRepository recordRepository;
     private final UserRepository userRepository;
 
-    public DBInitialization(UserRepository userRepository) {
+    public DBInitialization(UserRepository userRepository, RecordRepository recordRepository) {
         this.userRepository = userRepository;
+        this.recordRepository = recordRepository;
     }
 
     @PostConstruct
@@ -37,7 +45,14 @@ public class DBInitialization {
                 user.setId("test");
                 user.setPassword(defaultPassword);
                 user.encodePassword();
-                userRepository.save(user);
+                user = userRepository.save(user);
+                cat.udl.eps.softarch.demo.domain.Record record = new Record();
+                record.setName("My test record");
+                record.setDescription("A record used for testing purposes, nothing more, nothing less...");
+                record.setCreated(ZonedDateTime.now());
+                record.setModified(record.getCreated());
+                record.setOwnedBy(user);
+                recordRepository.save(record);
             }
         }
     }

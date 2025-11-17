@@ -25,5 +25,30 @@ Template for a Spring Boot project including Spring REST, HATEOAS, JPA, etc. Add
 
 ## Entities Model
 
-![EntityModelsDiagram](http://www.plantuml.com/plantuml/svg/5Sqn3W8X40NGtbFe0M1wgxNOJXEJZGT061SI6CZC9rvVjthbMmn1CLizNOh4EXDFhUSC3BiIQVZwlI3FzpJMs0KiyB4tUgMxMv-Rs_e7DusPR6YHtO7Rg05CBHXOQHKK5BP7JrpzEAA59Vtz0G00?v0)
+```mermaid
+classDiagram
+    class UriEntity {
+        uri : String
+    }
+    
+    class UserDetails 
+    <<interface>> UserDetails
 
+    class User  {
+        username : String
+        password : String
+        email : String
+    }
+
+    class Resource {
+        name: String
+        description: String
+        created: ZonedDateTime
+        modified: ZonedDateTime
+    }
+
+    UriEntity <|-- User
+    UserDetails <|-- User
+    UriEntity <|-- Resource
+    User "1" <-- "*" Resource: ownedBy
+```
