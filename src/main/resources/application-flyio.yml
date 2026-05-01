@@ -1,4 +1,4 @@
-allowed-origins: "https://react-template.netlify.app,https://deploy-preview-*--react-template.netlify.app"
+allowed-origins: "https://react-template.vercel.app,https://react-template-*.vercel.app"
 
 logging:
     level:
