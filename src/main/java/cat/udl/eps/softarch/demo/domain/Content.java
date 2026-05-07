@@ -17,15 +17,9 @@ public class Content {
     private Long contentId;
 
     @ManyToMany
-    @JoinTable(
-        name = "content_tags",
-        joinColumns = @JoinColumn(name = "content_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
     private List<Tag> tags;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE, orphanRemoval = true)
