@@ -3,8 +3,13 @@ package cat.udl.eps.softarch.demo.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Entity
 @Data
+@EqualsAndHashCode(exclude = "creator")
+@ToString(exclude = "creator")
 public class Profile {
 
     @Id

@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Set;
+import java.util.HashSet;
+
 import java.time.ZonedDateTime;
 
 @Entity
@@ -35,6 +38,10 @@ public class Portfolio extends UriEntity<Long> {
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private User owner;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIdentityReference(alwaysAsId = true)
+    private Set<User> allowedUsers = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {

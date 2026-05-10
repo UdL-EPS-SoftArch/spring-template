@@ -15,9 +15,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 
+import lombok.ToString;
+
 @Entity
 @DiscriminatorValue("CREATOR")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "profile")
+@ToString(exclude = "profile")
 public class Creator extends User {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
