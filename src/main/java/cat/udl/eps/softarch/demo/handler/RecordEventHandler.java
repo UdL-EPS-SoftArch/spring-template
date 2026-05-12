@@ -29,6 +29,10 @@ public class RecordEventHandler {
 
     @HandleBeforeSave
     public void handleRecordPreSave(Record record) {
+        User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!owner.equals(record.getOwnedBy())) {
+            throw new SecurityException("Only the owner can modify the record");
+        }
         ZonedDateTime timeStamp = ZonedDateTime.now();
         record.setModified(timeStamp);
     }
