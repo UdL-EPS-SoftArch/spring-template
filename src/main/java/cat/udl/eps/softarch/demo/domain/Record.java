@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.ZonedDateTime;
@@ -21,6 +22,7 @@ public class Record extends UriEntity<Long> {
     @NotBlank
     private String name;
 
+    @Length(max = 500)
     private String description;
 
     @DateTimeFormat
