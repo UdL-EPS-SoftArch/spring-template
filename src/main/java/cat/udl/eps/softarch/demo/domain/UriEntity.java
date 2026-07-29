@@ -17,6 +17,7 @@ public abstract class UriEntity<ID extends Serializable> implements Persistable<
     /**
      * The uri string value.
      */
+    @SuppressWarnings("unused")
     private String uri;
     /**
      * The value of the entity version.

@@ -7,8 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cat.udl.eps.softarch.demo.DemoApplication;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.ObjectMapper;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -52,7 +51,6 @@ public class StepDefs {
                 .webAppContextSetup(this.wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
-        this.mapper.registerModule(new JavaTimeModule());
     }
 
     @Then("^The response code is (\\d+)$")
