@@ -28,4 +28,12 @@ Feature: Manage Record
         When I retrieve the record with name "My Record"
         Then The response code is 404
 
-    # TODO: Can retrieve if the other user makes it public
+    Scenario: Can retrieve if the other user makes it public
+        Given There is a registered user with username "user" and password "password" and email "user@sample.app"
+        And I login as "user" with password "password"
+        And I create a new record with name "My Record"
+        And I make the record with name "My Record" public
+        And There is a registered user with username "another" and password "password" and email "another@sample.app"
+        And I login as "another" with password "password"
+        When I retrieve the record with name "My Record"
+        Then The response code is 200
