@@ -15,6 +15,10 @@ import java.time.ZonedDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class Record extends UriEntity<Long> {
 
+    public enum Status {
+        PUBLIC, PRIVATE
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +28,9 @@ public class Record extends UriEntity<Long> {
 
     @Length(max = 500)
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PRIVATE;
 
     @DateTimeFormat
     private ZonedDateTime created;

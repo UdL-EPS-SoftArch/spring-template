@@ -22,6 +22,9 @@ public class RecordEventHandler {
     public void handleRecordPreCreate(Record record) {
         User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         record.setOwnedBy(owner);
+        if (record.getStatus() == null) {
+            record.setStatus(Record.Status.PRIVATE);
+        }
         ZonedDateTime timeStamp = ZonedDateTime.now();
         record.setCreated(timeStamp);
         record.setModified(timeStamp);

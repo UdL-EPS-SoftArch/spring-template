@@ -2,8 +2,10 @@ package cat.udl.eps.softarch.demo.steps;
 
 import cat.udl.eps.softarch.demo.domain.Record;
 import cat.udl.eps.softarch.demo.domain.User;
+import cat.udl.eps.softarch.demo.repository.RecordRepository;
 import cat.udl.eps.softarch.demo.repository.UserRepository;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
 
@@ -19,33 +21,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManageRecordStepDefs {
     private final StepDefs stepDefs;
     private final UserRepository userRepository;
+    private final RecordRepository recordRepository;
 
-    public ManageRecordStepDefs(StepDefs stepDefs, UserRepository userRepository) {
+    public ManageRecordStepDefs(StepDefs stepDefs, UserRepository userRepository, 
+        RecordRepository recordRepository) {
         this.stepDefs = stepDefs;
         this.userRepository = userRepository;
+        this.recordRepository = recordRepository;
     }
 
     @When("^I create a new record with name \"([^\"]*)\"$")
-    public void iCreateANewRecordWithName(String name) throws Throwable {
-        cat.udl.eps.softarch.demo.domain.Record record = new cat.udl.eps.softarch.demo.domain.Record();
+    public void iCreateANewRecordWithNameOwnedBy(String name) throws Throwable {
+        Record record = new Record();
         record.setName(name);
-
-        stepDefs.result = stepDefs.mockMvc.perform(
-                post("/users")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(stepDefs.mapper.writeValueAsString(record))
-                    .characterEncoding(StandardCharsets.UTF_8)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .with(AuthenticationStepDefs.authenticate()))
-            .andDo(print());
-    }
-
-    @When("^I create a new record with name \"([^\"]*)\" owned by \"([^\"]*)\"$")
-    public void iCreateANewRecordWithNameOwnedBy(String name, String ownerName) throws Throwable {
-        cat.udl.eps.softarch.demo.domain.Record record = new Record();
-        record.setName(name);
-        User owner = userRepository.findById(ownerName).orElseThrow();
-        record.setOwnedBy(owner);
 
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/records")
@@ -71,12 +59,17 @@ public class ManageRecordStepDefs {
 
     @When("^I retrieve the record with name \"([^\"]*)\"$")
     public void iRetrieveRecordByName(String name) throws Throwable {
+        Record record = recordRepository.findByName(name).stream().findFirst().orElseThrow();
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/records/search/findByName?name={name}", name)
+                get(record.getUri())
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
-            .andDo(print())
-            .andExpect(jsonPath("$._embedded.records[0].name", is(name)));
+            .andDo(print());
+    }
+
+    @Then("^The retrieved record has name \"([^\"]*)\"$")
+    public void theRetrieveRecordHasName(String name) throws Throwable {
+        stepDefs.result.andExpect(jsonPath("$.name", is(name)));
     }
 
     @And("^The list of records owned by \"([^\"]*)\" includes one named \"([^\"]*)\"$")
