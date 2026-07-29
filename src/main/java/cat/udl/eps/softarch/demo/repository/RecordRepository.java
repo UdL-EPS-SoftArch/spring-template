@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 @RepositoryRestResource
-public interface RecordRepository extends CrudRepository<cat.udl.eps.softarch.demo.domain.Record, Long>, PagingAndSortingRepository<Record, Long> {
-    List<cat.udl.eps.softarch.demo.domain.Record> findByOwnedBy(@Param("user") User owner);
+public interface RecordRepository extends CrudRepository<Record, Long>, PagingAndSortingRepository<Record, Long> {
+    List<Record> findByOwnedBy(@Param("user") User owner);
+    List<Record> findByName(@Param("name") String name);
 }

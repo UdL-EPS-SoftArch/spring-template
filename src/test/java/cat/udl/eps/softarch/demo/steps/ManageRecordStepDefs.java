@@ -69,6 +69,16 @@ public class ManageRecordStepDefs {
             .andExpect(jsonPath("$.username", is(username)));
     }
 
+    @When("^I retrieve the record with name \"([^\"]*)\"$")
+    public void iRetrieveRecordByName(String name) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/records/search/findByName?name={name}", name)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andExpect(jsonPath("$._embedded.records[0].name", is(name)));
+    }
+
     @And("^The list of records owned by \"([^\"]*)\" includes one named \"([^\"]*)\"$")
     public void itHasBeenCreatedAUserWithUsername(String username, String resourceName) throws Throwable {
         User owner = userRepository.findById(username).orElseThrow();
