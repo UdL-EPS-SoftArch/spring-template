@@ -13,7 +13,7 @@ Feature: Manage Record
         When I create a new record with name "My Record"
         Then The response code is 201
         And The new record is owned by "user"
-        And The list of records owned by "user" includes one named "My Record"
+        And The list of records owned by "user" includes 1 named "My Record"
 
     Scenario: Cannot create a record with empty name
         Given I login as "user" with password "password"
@@ -39,4 +39,26 @@ Feature: Manage Record
         When I retrieve the record with name "Existing Record"
         Then The response code is 200
 
+    Scenario: Creator can edit and modified timestamp is updated
+        Given I login as "user" with password "password"
+        When I edit the record with name "Existing Record" to have name "Edited Record"
+        Then The response code is 200
+        And The list of records owned by "user" includes 1 named "Edited Record"
+        And The list of records owned by "user" includes 0 named "Existing Record"
+        And The modified timestamp of the record with name "Edited Record" is after the created one
+
+    Scenario: Cannot edit a record owned by another user
+        Given I login as "another" with password "password"
+        When I edit the record with name "Existing Record" to have name "Edited Record"
+        Then The response code is 404
     
+    Scenario: Creator can delete their own record
+        Given I login as "user" with password "password"
+        When I delete the record with name "Existing Record"
+        Then The response code is 204
+        And The list of records owned by "user" includes 0 named "Existing Record"
+
+    Scenario: Cannot delete a record owned by another user
+        Given I login as "another" with password "password"
+        When I delete the record with name "Existing Record"
+        Then The response code is 404

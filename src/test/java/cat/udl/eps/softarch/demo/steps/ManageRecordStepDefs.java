@@ -10,11 +10,16 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.lessThan;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -87,8 +92,8 @@ public class ManageRecordStepDefs {
         stepDefs.result.andExpect(jsonPath("$.name", is(name)));
     }
 
-    @Then("The list of records owned by {string} includes one named {string}")
-    public void itHasBeenCreatedAUserWithUsername(String username, String resourceName) throws Throwable {
+    @Then("The list of records owned by {string} includes {int} named {string}")
+    public void theListOfRecordsOwnedByIncludesNamed(String username, int count, String resourceName) throws Throwable {
         User owner = userRepository.findById(username).orElseThrow();
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/records/search/findByOwnedBy?user={userUri}", owner.getUri())
@@ -96,7 +101,7 @@ public class ManageRecordStepDefs {
                     .characterEncoding(StandardCharsets.UTF_8)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())
-            .andExpect(jsonPath("$._embedded.records[*].name", hasItem(is(resourceName))));
+            .andExpect(jsonPath("$._embedded.records[?(@.name == '" + resourceName + "')]", hasSize(count)));
     }
 
     @Given("I make the record with name {string} public")
@@ -108,6 +113,42 @@ public class ManageRecordStepDefs {
                     .content("{\"status\":\"PUBLIC\"}")
                     .characterEncoding(StandardCharsets.UTF_8)
                     .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print());
+    }
+
+    @When("I edit the record with name {string} to have name {string}")
+    public void iEditRecordName(String currentName, String newName) throws Throwable {
+        Record record = recordRepository.findByName(currentName).stream().findFirst().orElseThrow();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch(record.getUri())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"name\":\"" + newName + "\"}")
+                    .characterEncoding(StandardCharsets.UTF_8)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print());
+    }
+
+    @Then("The modified timestamp of the record with name {string} is after the created one")
+    public void modifiedTimestampIsAfterCreated(String name) throws Throwable {
+        Record record = recordRepository.findByName(name).stream().findFirst().orElseThrow();
+        String json = stepDefs.mockMvc.perform(
+                get(record.getUri())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andReturn().getResponse().getContentAsString();
+        String created = JsonPath.read(json, "$.created");
+        String modified = JsonPath.read(json, "$.modified");
+        assertThat("modified should be after created", created, lessThan(modified));
+    }
+
+    @When("I delete the record with name {string}")
+    public void iDeleteRecordByName(String name) throws Throwable {
+        Record record = recordRepository.findByName(name).stream().findFirst().orElseThrow();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                delete(record.getUri())
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print());
     }
