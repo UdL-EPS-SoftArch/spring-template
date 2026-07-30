@@ -1,0 +1,15 @@
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/DemoApplication.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/config/AuthenticationConfig.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/config/BasicUserDetailsService.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/config/DBInitialization.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/config/DatabaseConfig.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/config/RestValidationConfig.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/config/WebSecurityConfig.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/controller/IdentityController.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/domain/Record.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/domain/UriEntity.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/domain/User.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/handler/RecordEventHandler.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/handler/UserEventHandler.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/repository/RecordRepository.java
+/home/runner/work/spring-template/spring-template/src/main/java/cat/udl/eps/softarch/demo/repository/UserRepository.java

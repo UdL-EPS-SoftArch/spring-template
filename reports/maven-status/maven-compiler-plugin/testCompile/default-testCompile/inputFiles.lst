@@ -1,0 +1,6 @@
+/home/runner/work/spring-template/spring-template/src/test/java/cat/udl/eps/softarch/demo/CucumberTest.java
+/home/runner/work/spring-template/spring-template/src/test/java/cat/udl/eps/softarch/demo/DemoApplicationTests.java
+/home/runner/work/spring-template/spring-template/src/test/java/cat/udl/eps/softarch/demo/steps/AuthenticationStepDefs.java
+/home/runner/work/spring-template/spring-template/src/test/java/cat/udl/eps/softarch/demo/steps/ManageRecordStepDefs.java
+/home/runner/work/spring-template/spring-template/src/test/java/cat/udl/eps/softarch/demo/steps/RegisterStepDefs.java
+/home/runner/work/spring-template/spring-template/src/test/java/cat/udl/eps/softarch/demo/steps/StepDefs.java

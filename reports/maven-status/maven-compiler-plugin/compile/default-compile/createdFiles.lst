@@ -1,0 +1,16 @@
+cat/udl/eps/softarch/demo/config/BasicUserDetailsService.class
+cat/udl/eps/softarch/demo/DemoApplication.class
+cat/udl/eps/softarch/demo/domain/User.class
+cat/udl/eps/softarch/demo/repository/UserRepository.class
+cat/udl/eps/softarch/demo/config/DBInitialization.class
+cat/udl/eps/softarch/demo/config/RestValidationConfig.class
+cat/udl/eps/softarch/demo/config/AuthenticationConfig.class
+cat/udl/eps/softarch/demo/controller/IdentityController.class
+cat/udl/eps/softarch/demo/handler/RecordEventHandler.class
+cat/udl/eps/softarch/demo/config/WebSecurityConfig.class
+cat/udl/eps/softarch/demo/domain/Record$Status.class
+cat/udl/eps/softarch/demo/repository/RecordRepository.class
+cat/udl/eps/softarch/demo/domain/UriEntity.class
+cat/udl/eps/softarch/demo/handler/UserEventHandler.class
+cat/udl/eps/softarch/demo/config/DatabaseConfig.class
+cat/udl/eps/softarch/demo/domain/Record.class

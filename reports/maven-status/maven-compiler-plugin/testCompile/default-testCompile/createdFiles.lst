@@ -1,0 +1,6 @@
+cat/udl/eps/softarch/demo/steps/AuthenticationStepDefs.class
+cat/udl/eps/softarch/demo/steps/RegisterStepDefs.class
+cat/udl/eps/softarch/demo/DemoApplicationTests.class
+cat/udl/eps/softarch/demo/steps/ManageRecordStepDefs.class
+cat/udl/eps/softarch/demo/CucumberTest.class
+cat/udl/eps/softarch/demo/steps/StepDefs.class

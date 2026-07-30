@@ -1,0 +1,21 @@
+allowed-origins: "https://react-template.vercel.app,https://react-template-*.vercel.app"
+
+server:
+  port: 8080
+  address: 0.0.0.0
+
+spring:
+  main:
+    lazy-initialization: true     # only creates beans on first use
+  jpa:
+    open-in-view: false           # OSIV consumes a DB connection per request
+
+logging:
+    level:
+        org:
+            hibernate: error
+            springframework: error
+        com:
+            zaxxer:
+                hikari: error
+        root: error
