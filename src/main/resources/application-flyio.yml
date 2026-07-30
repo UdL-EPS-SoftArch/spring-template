@@ -1,9 +1,15 @@
 allowed-origins: "https://react-template.vercel.app,https://react-template-*.vercel.app"
 
+server:
+  port: 8080
+  address: 0.0.0.0
+
 logging:
     level:
         org:
-            hibernate: error
-            springframework.core: error
-            springframework.web: error
-        root: error
+            hibernate: info
+            springframework: info
+        com:
+            zaxxer:
+                hikari: info
+        root: info

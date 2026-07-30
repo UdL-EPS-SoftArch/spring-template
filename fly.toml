@@ -1,16 +1,11 @@
-# fly.toml app configuration file generated for spring-template on 2025-09-08T00:25:51+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
 app = 'spring-template'
 primary_region = 'ams'
-swap_size_mb = 512
+swap_size_mb = 1024
 
 [build]
 
 [env]
-  JAVA_OPTS = '-XX:MaxRAM=70m'
+  JAVA_OPTS = '-XX:MaxRAM=128m'
   SERVER_FORWARD_HEADERS_STRATEGY = 'NATIVE'
   SPRING_PROFILES_ACTIVE = 'flyio'
 
