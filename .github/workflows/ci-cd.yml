@@ -6,6 +6,15 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,8 +27,12 @@ jobs:
           distribution: 'temurin'
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        env:
-          CUCUMBER_PUBLISH_ENABLED: true
+      - name: Upload Cucumber Report
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: cucumber-report
+          path: target/cucumber-report.html
+          retention-days: 30
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy to fly.io
         if: success() && github.ref == 'refs/heads/main'
@@ -28,17 +41,37 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: Login to DockerHub
         if: success() && github.ref == 'refs/heads/main'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v4.6.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push to Docker Hub
         if: success() && github.ref == 'refs/heads/main'
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v7.3.0
         with:
           context: .
           push: true
           tags: |
             udlepssoftarch/spring-template:${{ github.sha }}
             udlepssoftarch/spring-template:latest
+      - name: Stage Cucumber Report for Pages
+        if: github.ref == 'refs/heads/main'
+        run: mkdir -p pages-site/reports && cp target/cucumber-report.html pages-site/reports/
+      - name: Upload Pages Artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: ./pages-site
+
+  deploy-pages:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5.0.0
