@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
 
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
@@ -30,6 +31,18 @@ public class ManageRecordStepDefs {
         this.stepDefs = stepDefs;
         this.userRepository = userRepository;
         this.recordRepository = recordRepository;
+    }
+
+    @Given("There is a record with name {string} owned by {string}")
+    public void thereIsARecordWithNameOwnedBy(String name, String ownerUsername) {
+        Record record = new Record();
+        record.setName(name);
+        User owner = userRepository.findById(ownerUsername).orElseThrow();
+        record.setOwnedBy(owner);
+        record.setStatus(Record.Status.PRIVATE);
+        record.setCreated(ZonedDateTime.now());
+        record.setModified(ZonedDateTime.now());
+        recordRepository.save(record);
     }
 
     @When("I create a new record with name {string}")

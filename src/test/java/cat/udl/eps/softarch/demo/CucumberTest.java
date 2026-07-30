@@ -11,6 +11,7 @@ import org.junit.platform.suite.api.Suite;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "cat.udl.eps.softarch.demo.steps")
+@ConfigurationParameter(key = "cucumber.plugin", value = "pretty")
 public class CucumberTest {
 
 }
