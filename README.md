@@ -4,24 +4,27 @@ Template for a Spring Boot project including Spring REST, HATEOAS, JPA, etc. Add
 
 [![Open Issues](https://img.shields.io/github/issues-raw/UdL-EPS-SoftArch/spring-template?logo=github)](https://github.com/orgs/UdL-EPS-SoftArch/projects/12)
 [![CI/CD](https://github.com/UdL-EPS-SoftArch/spring-template/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/UdL-EPS-SoftArch/spring-template/actions)
-[![CucumberReports: UdL-EPS-SoftArch](https://messages.cucumber.io/api/report-collections/faed8ca5-e474-4a1a-a72a-b8e2a2cd69f0/badge)](https://reports.cucumber.io/report-collections/faed8ca5-e474-4a1a-a72a-b8e2a2cd69f0)
+[![Cucumber Reports](https://img.shields.io/badge/cucumber-reports-brightgreen)](https://UdL-EPS-SoftArch.github.io/spring-template/reports/cucumber-report.html)
 [![Deployment status](https://img.shields.io/uptimerobot/status/m792691238-18db2a43adf8d8ded474f885)](https://spring-template.fly.dev/users)
 
 ## Vision
 
-**For** ... **who** want to ...
-**the project** ... **is an** ...
-**that** allows ...
-**Unlike** other ...
+**For** students learning Spring Boot and REST API development
+**who** want to practice backend engineering with modern tools
+**the project** is a template project
+**that** provides user registration, authentication, and secured record management with ownership-based access control
+**Unlike** other templates, this one is designed for iterative feature building with BDD (Cucumber) tests driving the development
 
 ## Features per Stakeholder
 
-| USER                | ADMIN                |
-|---------------------|----------------------|
-| Register            |                      |
-| Login               |                      |
-| Logout              |                      |
-|                     |                      |
+| USER                          | ADMIN                |
+|-------------------------------|----------------------|
+| Register                      |                      |
+| Login                         |                      |
+| Create Record                 |                      |
+| Retrieve Record               |                      |
+| Update Record                 |                      |
+| Delete Record                 |                      |
 
 ## Entities Model
 
@@ -30,8 +33,8 @@ classDiagram
     class UriEntity {
         uri : String
     }
-    
-    class UserDetails 
+
+    class UserDetails
     <<interface>> UserDetails
 
     class User  {
@@ -40,15 +43,17 @@ classDiagram
         email : String
     }
 
-    class Resource {
+    class Record {
+        id: Long
         name: String
         description: String
         created: ZonedDateTime
         modified: ZonedDateTime
+        status: Status
     }
 
     UriEntity <|-- User
     UserDetails <|-- User
-    UriEntity <|-- Resource
-    User "1" <-- "*" Resource: ownedBy
+    UriEntity <|-- Record
+    User "1" <-- "*" Record: ownedBy
 ```
