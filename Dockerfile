@@ -1,4 +1,4 @@
-FROM ibm-semeru-runtimes:open-21-jdk-focal
+FROM eclipse-temurin:21-jre
 
 WORKDIR /home/app
 

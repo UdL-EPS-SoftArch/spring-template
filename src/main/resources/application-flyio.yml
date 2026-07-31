@@ -4,6 +4,12 @@ server:
   port: 8080
   address: 0.0.0.0
 
+spring:
+  main:
+    lazy-initialization: true     # only creates beans on first use
+  jpa:
+    open-in-view: false           # OSIV consumes a DB connection per request
+
 logging:
     level:
         org:
