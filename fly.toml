@@ -9,7 +9,7 @@ primary_region = 'ams'
 [build]
 
 [env]
-  JAVA_OPTS = '-Xmx128m -Xms64m'
+  JAVA_OPTS = '-Xmx256m -Xms64m'
   SERVER_FORWARD_HEADERS_STRATEGY = 'NATIVE'
   SPRING_PROFILES_ACTIVE = 'flyio'
 
