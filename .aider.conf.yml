@@ -1,0 +1,24 @@
+# Models
+model: groq/qwen/qwen3.6-27b
+editor-model: groq/openai/gpt-oss-120b
+weak-model: groq/meta-llama/llama-prompt-guard-2-86m
+
+# Always load project conventions
+read:
+  - CONVENTIONS.md
+
+# Settings optimized for low-token budget models via Groq
+check-model-accepts-settings: false
+reasoning-effort: none
+edit-format: diff                               # forces diff-style edits, not whole-file rewrites
+map-tokens: 512                                 # small repo map instead of the ~1024+ default
+max-chat-history-tokens: 2000                   # aggressively trims conversation history each turn
+cache-prompts: true
+
+# Behavior
+test-cmd: "mvn -q test -Dtest=CucumberTest -Dcucumber.plugin=summary -Dsurefire.trimStackTrace=true"
+auto-test: false
+auto-commits: true
+auto-lint: false
+stream: true
+dark-mode: true
