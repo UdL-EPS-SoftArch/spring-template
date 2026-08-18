@@ -7,8 +7,6 @@ import org.springframework.data.rest.core.annotation.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
-
 @Component
 @RepositoryEventHandler
 public class RecordEventHandler {
@@ -25,9 +23,6 @@ public class RecordEventHandler {
         if (record.getStatus() == null) {
             record.setStatus(Record.Status.PRIVATE);
         }
-        ZonedDateTime timeStamp = ZonedDateTime.now();
-        record.setCreated(timeStamp);
-        record.setModified(timeStamp);
     }
 
     @HandleBeforeSave
@@ -36,7 +31,5 @@ public class RecordEventHandler {
         if (!owner.getUsername().equals(record.getOwnedBy().getUsername())) {
             throw new SecurityException("Only the owner can modify the record");
         }
-        ZonedDateTime timeStamp = ZonedDateTime.now();
-        record.setModified(timeStamp);
     }
 }

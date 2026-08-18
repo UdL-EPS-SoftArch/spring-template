@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import jakarta.annotation.PostConstruct;
 
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 
 @Configuration
@@ -49,8 +48,6 @@ public class DBInitialization {
                 cat.udl.eps.softarch.demo.domain.Record record = new Record();
                 record.setName("My test record");
                 record.setDescription("A record used for testing purposes, nothing more, nothing less...");
-                record.setCreated(ZonedDateTime.now());
-                record.setModified(record.getCreated());
                 record.setOwnedBy(user);
                 recordRepository.save(record);
             }

@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import com.jayway.jsonpath.JsonPath;
 
 import java.nio.charset.StandardCharsets;
-import java.time.ZonedDateTime;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -45,8 +45,6 @@ public class ManageRecordStepDefs {
         User owner = userRepository.findById(ownerUsername).orElseThrow();
         record.setOwnedBy(owner);
         record.setStatus(Record.Status.PRIVATE);
-        record.setCreated(ZonedDateTime.now());
-        record.setModified(ZonedDateTime.now());
         recordRepository.save(record);
     }
 
@@ -123,7 +121,7 @@ public class ManageRecordStepDefs {
         stepDefs.result = stepDefs.mockMvc.perform(
                 patch(record.getUri())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"name\":\"" + newName + "\"}")
+                    .content(stepDefs.mapper.writeValueAsString(Map.of("name", newName)))
                     .characterEncoding(StandardCharsets.UTF_8)
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
