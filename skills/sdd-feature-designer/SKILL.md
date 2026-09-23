@@ -8,7 +8,7 @@ description: Design concise, standardized Cucumber Gherkin feature files (.featu
 This skill guides AI agents (Aider, OpenCode, Claude Code, Cursor, Copilot) to author concise, high-quality Cucumber BDD `.feature` files for Spring Data REST backends.
 
 ## Guidelines
-- **Strict Size Constraint**: Keep `.feature` files under **50 lines**. Focus on core CRUD & authorization scenarios.
+- **Size Constraint**: Keep `.feature` files not too long. Focus on core CRUD & authorization scenarios.
 - **Reuse Background Steps**: Always align with standard user registration and authentication setup steps.
 - **REST Status Code Mapping**:
   - `201`: Created (POST)

@@ -10,7 +10,7 @@ This repository is a **Spring Data REST + Cucumber BDD** backend template design
 
 ## SDD Skills Directory
 Refer to `skills/` for specific stage playbooks:
-- `skills/sdd-feature-designer/SKILL.md`: Draft Cucumber `.feature` specs (<50 lines).
+- `skills/sdd-feature-designer/SKILL.md`: Draft Cucumber `.feature` specs, keep not too long.
 - `skills/sdd-cucumber-steps/SKILL.md`: Implement Cucumber step definitions extending `StepDefs.java`.
 - `skills/spring-datarest-entity/SKILL.md`: Generate domain entities and their `@RepositoryRestResource` interfaces with SpEL queries.
 - `skills/spring-datarest-handler/SKILL.md`: Generate `@RepositoryEventHandler` for entities lifecycle events management.
