@@ -5,7 +5,7 @@ description: Implement Cucumber step definitions (*StepDefs.java) that test Spri
 
 # SDD Cucumber Steps Skill
 
-This skill guides AI agents to implement clean, concise Cucumber step definitions (`*StepDefs.java`) for Spring Data REST entities. Avoid AmbiguousStepDefinitions errors by checking if steps already implemented in other *StepDefs.java files
+This skill guides AI agents to implement clean, concise Cucumber step definitions (`*StepDefs.java`) for Spring Data REST entities. Avoid AmbiguousStepDefinitions errors by checking if steps already implemented in other *StepDefs.java files. Test the endpoints using MockMvc in When steps, but prefer using the repository in Given and Thens steps.
 
 ## Conventions & Rules
 
