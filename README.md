@@ -1,6 +1,7 @@
-# Spring Boot Template
+# VibeCheck API
 
-Template for a Spring Boot project including Spring REST, HATEOAS, JPA, etc. Additional details: [HELP.md](HELP.md)
+Backend API for VibeCheck, an event discovery and management platform for Erasmus students.
+It is built with Spring Boot, Spring Data REST, Spring Security, JPA, and Cucumber.
 
 [![Open Issues](https://img.shields.io/github/issues-raw/UdL-EPS-SoftArch/spring-template?logo=github)](https://github.com/orgs/UdL-EPS-SoftArch/projects/12)
 [![CI/CD](https://github.com/UdL-EPS-SoftArch/spring-template/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/UdL-EPS-SoftArch/spring-template/actions)
@@ -9,22 +10,23 @@ Template for a Spring Boot project including Spring REST, HATEOAS, JPA, etc. Add
 
 ## Vision
 
-**For** students learning Spring Boot and REST API development
-**who** want to practice backend engineering with modern tools
-**the project** is a template project
-**that** provides user registration, authentication, and secured record management with ownership-based access control
-**Unlike** other templates, this one is designed for iterative feature building with BDD (Cucumber) tests driving the development
+**For** Erasmus students who want to easily find and organize local activities,
+**VibeCheck** is an event management and social discovery platform
+**that** lets users explore, create, and join student events,
+**unlike** scattered messaging groups and general social media, it provides one hub for the international student community.
 
 ## Features per Stakeholder
 
-| USER                          | ADMIN                |
-|-------------------------------|----------------------|
-| Register                      |                      |
-| Login                         |                      |
-| Create Record                 |                      |
-| Retrieve Record               |                      |
-| Update Record                 |                      |
-| Delete Record                 |                      |
+This table describes the intended product scope; not every feature has been implemented yet.
+
+| Erasmus student | Admin | Anonymous visitor |
+|---|---|---|
+| Register, log in, log out | Log in, log out | View public events and their locations |
+| View and edit profile | Review flagged content | Search and filter public events |
+| Create, edit, and delete own events | Remove inappropriate events | |
+| Join and leave events | Suspend users | |
+| Search and filter events | | |
+| Comment on events and report content | | |
 
 ## Entities Model
 
@@ -39,23 +41,55 @@ classDiagram
 
     class User  {
         username : String
+        fullName : String
         password : String
         email : String
     }
 
-    class Record {
+    class Category {
         id: Long
         name: String
+    }
+
+    class Subcategory {
+        id: Long
+        name: String
+    }
+
+    class Event {
+        id: Long
+        title: String
         description: String
-        created: ZonedDateTime
-        modified: ZonedDateTime
-        status: Status
+        address: String
+        dateTime: LocalDateTime
+        maxParticipants: Integer
+        estimatedCost: BigDecimal
+    }
+
+    class EventParticipant {
+        id: Long
+    }
+
+    class Comment {
+        id: Long
+        content: String
+        createdAt: Instant
     }
 
     UriEntity <|-- User
-    UserDetails <|-- User
-    UriEntity <|-- Record
-    User "1" <-- "*" Record: ownedBy
+    UserDetails <|.. User
+    UriEntity <|-- Category
+    UriEntity <|-- Subcategory
+    UriEntity <|-- Event
+    UriEntity <|-- EventParticipant
+    UriEntity <|-- Comment
+    Category "1" <-- "*" Subcategory : contains
+    Subcategory "1" <-- "*" Event : classifies
+    User "1" <-- "*" Event : creator
+    Event "1" <-- "*" EventParticipant
+    User "1" <-- "*" EventParticipant
+    Event "1" <-- "*" Comment
+    User "1" <-- "*" Comment : author
 ```
 
 ## AI-Assisted Spec-Driven Development (SDD)
