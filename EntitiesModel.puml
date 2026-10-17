@@ -2,14 +2,52 @@
 
 class User extends UriEntity implements UserDetails {
   username : String
-  password : String
+  fullName : String
   email : String
+  password : String
+}
+
+class Category extends UriEntity {
+  id : Long
+  name : String
+}
+
+class Subcategory extends UriEntity {
+  id : Long
+  name : String
+}
+
+class Event extends UriEntity {
+  id : Long
+  title : String
+  description : String
+  address : String
+  dateTime : LocalDateTime
+  maxParticipants : Integer
+  estimatedCost : BigDecimal
+}
+
+class EventParticipant extends UriEntity {
+  id : Long
+}
+
+class Comment extends UriEntity {
+  id : Long
+  content : String
+  createdAt : Instant
 }
 
 class UriEntity {
   uri : String
+  version : Long
 }
 
-User "1" --right-- "*" Resource : owner <
+Category "1" -- "0..*" Subcategory : contains
+Subcategory "1" -- "0..*" Event : classifies
+User "1" -- "0..*" Event : creates
+Event "1" -- "0..*" EventParticipant : has participants
+User "1" -- "0..*" EventParticipant : joins
+Event "1" -- "0..*" Comment : has comments
+User "1" -- "0..*" Comment : writes
 
 @enduml

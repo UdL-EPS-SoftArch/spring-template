@@ -38,6 +38,7 @@ public class RegisterStepDefs {
       User user = new User();
       user.setEmail(email);
       user.setId(username);
+      user.setFullName(username);
       user.setPassword(password);
       user.encodePassword();
       userRepository.save(user);
@@ -70,10 +71,12 @@ public class RegisterStepDefs {
         .andExpect(status().isUnauthorized());
   }
 
-  @When("^I register a new user with username \"([^\"]*)\", email \"([^\"]*)\" and password \"([^\"]*)\"$")
-  public void iRegisterANewUserWithUsernameEmailAndPassword(String username, String email, String password) throws Throwable {
+  @When("^I register a new user with username \"([^\"]*)\", full name \"([^\"]*)\", email \"([^\"]*)\" and password \"([^\"]*)\"$")
+  public void iRegisterANewUserWithUsernameFullNameEmailAndPassword(
+      String username, String fullName, String email, String password) throws Throwable {
     User user = new User();
     user.setId(username);
+    user.setFullName(fullName);
     user.setEmail(email);
 
     stepDefs.result = stepDefs.mockMvc.perform(
@@ -88,13 +91,15 @@ public class RegisterStepDefs {
             .andDo(print());
   }
 
-  @And("^It has been created a user with username \"([^\"]*)\" and email \"([^\"]*)\", the password is not returned$")
-  public void itHasBeenCreatedAUserWithUsername(String username, String email) throws Throwable {
+  @And("^It has been created a user with username \"([^\"]*)\" and full name \"([^\"]*)\" and email \"([^\"]*)\", the password is not returned$")
+  public void itHasBeenCreatedAUserWithUsernameAndFullName(
+      String username, String fullName, String email) throws Throwable {
     stepDefs.result = stepDefs.mockMvc.perform(
             get("/users/{username}", username)
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())
+            .andExpect(jsonPath("$.fullName", is(fullName)))
             .andExpect(jsonPath("$.email", is(email)))
             .andExpect(jsonPath("$.password").doesNotExist());
   }

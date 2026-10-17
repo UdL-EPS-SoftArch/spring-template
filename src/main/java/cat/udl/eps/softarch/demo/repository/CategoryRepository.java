@@ -1,0 +1,15 @@
+package cat.udl.eps.softarch.demo.repository;
+
+import cat.udl.eps.softarch.demo.domain.Category;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.Optional;
+
+public interface CategoryRepository extends CrudRepository<Category, Long>,
+        PagingAndSortingRepository<Category, Long> {
+
+    Optional<Category> findByName(String name);
+
+    boolean existsByName(String name);
+}
