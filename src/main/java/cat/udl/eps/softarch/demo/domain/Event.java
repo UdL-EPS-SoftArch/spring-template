@@ -1,29 +1,31 @@
 package cat.udl.eps.softarch.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Min;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "events")
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Event extends UriEntity<Long> {
@@ -33,42 +35,48 @@ public class Event extends UriEntity<Long> {
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
-    @Column(nullable = false, length = 20)
     private String title;
 
     @NotBlank
-    @Size(max = 200)
-    @Column(nullable = false, length = 200)
+    @Length(max = 500)
     private String description;
 
     @NotBlank
-    @Size(max = 40)
-    @Column(nullable = false, length = 40)
     private String address;
 
     @NotNull
-    @Column(nullable = false)
     private LocalDateTime dateTime;
 
     @NotNull
-    @Min(1)
-    @Column(nullable = false)
+    @Positive
     private Integer maxParticipants;
 
     @NotNull
-    @DecimalMin("0.00")
-    @Digits(integer = 8, fraction = 2)
-    @Column(nullable = false, precision = 10, scale = 2)
+    @PositiveOrZero
     private BigDecimal estimatedCost;
+
+    @NotNull
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private Subcategory subcategory;
+
+    @CreatedDate
+    @DateTimeFormat
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Instant created;
+
+    @LastModifiedDate
+    @DateTimeFormat
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Instant modified;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "creator_id", nullable = false, updatable = false)
     @JsonIdentityReference(alwaysAsId = true)
     private User creator;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "subcategory_id", nullable = false)
-    @JsonIdentityReference(alwaysAsId = true)
-    private Subcategory subcategory;
+    @JsonIgnore
+    @RestResource(exported = false)
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<User> participants = new HashSet<>();
 }

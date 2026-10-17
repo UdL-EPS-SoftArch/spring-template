@@ -31,6 +31,8 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/users").authenticated()
                 .requestMatchers(HttpMethod.POST, "/users").anonymous()
                 .requestMatchers(HttpMethod.POST, "/users/*").denyAll()
+                .requestMatchers(HttpMethod.POST, "/categories", "/subcategories").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/*").authenticated()     // Collection creation, e.g. POST /events
                 .requestMatchers(HttpMethod.GET, "/records").permitAll()    // Allow listing public records
                 .requestMatchers(HttpMethod.GET, "/records/*").permitAll()  // Allow retrieving public records
                 .requestMatchers(HttpMethod.GET, "/events", "/events/**").permitAll()
@@ -40,7 +42,6 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/events/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/categories", "/categories/**",
                         "/subcategories", "/subcategories/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/categories", "/subcategories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/categories/**", "/subcategories/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/categories/**", "/subcategories/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/categories/**", "/subcategories/**").hasRole("ADMIN")
@@ -54,6 +55,7 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.PATCH, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/*/*").authenticated()
+                .requestMatchers("/events/*/participants").authenticated()  // Join and leave events
                 .anyRequest().permitAll())
             .csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
