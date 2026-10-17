@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Optional;
 
@@ -30,4 +31,9 @@ public interface EventRepository extends CrudRepository<Event, Long>, PagingAndS
 
     @Query("SELECT e FROM Event e WHERE e.ownedBy = :user AND (" + OWNERSHIP_CLAUSE + ")")
     Page<Event> findByOwnedBy(@Param("user") User owner, Pageable pageable);
+
+    // Bypasses the ownership clause so any signed-in student can join or leave an event
+    @RestResource(exported = false)
+    @Query("SELECT e FROM Event e WHERE e.id = :id")
+    Optional<Event> findAnyById(@Param("id") Long id);
 }

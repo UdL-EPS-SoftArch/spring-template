@@ -19,7 +19,7 @@ public class EventEventHandler {
     @HandleBeforeSave
     public void handleEventPreSave(Event event) {
         User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!owner.getUsername().equals(event.getOwnedBy().getUsername())) {
+        if (!owner.isAdmin() && !owner.getUsername().equals(event.getOwnedBy().getUsername())) {
             throw new SecurityException("Only the owner can modify the event");
         }
     }

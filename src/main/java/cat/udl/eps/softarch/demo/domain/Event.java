@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
@@ -14,11 +15,14 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -69,4 +73,9 @@ public class Event extends UriEntity<Long> {
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private User ownedBy;
+
+    @JsonIgnore
+    @RestResource(exported = false)
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<User> participants = new HashSet<>();
 }
