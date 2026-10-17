@@ -79,7 +79,7 @@ public class ManageEventsStepDefs {
         event.setMaxParticipants(20);
         event.setEstimatedCost(new BigDecimal("5.00"));
         event.setSubcategory(subcategoryNamed(DEFAULT_SUBCATEGORY));
-        event.setOwnedBy(owner);
+        event.setCreator(owner);
 
         eventUrisByTitle.put(title, eventRepository.save(event).getUri());
     }
@@ -122,7 +122,7 @@ public class ManageEventsStepDefs {
         // PUT replaces the whole resource, so a removed field is missing rather than kept from the stored event
         Map<String, Object> body = new HashMap<>(VALID_EVENT);
         body.put("subcategory", subcategoryNamed(DEFAULT_SUBCATEGORY).getUri());
-        body.put("ownedBy", event.getOwnedBy().getUri());
+        body.put("creator", userRepository.findById(event.getCreator().getId()).orElseThrow().getUri());
         body.remove(field);
 
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -146,7 +146,7 @@ public class ManageEventsStepDefs {
     @Then("the event titled {string} is owned by {string}")
     public void theEventTitledIsOwnedBy(String title, String username) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get(resolveEventUri(title) + "/ownedBy")
+                get(resolveEventUri(title) + "/creator")
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())
@@ -187,6 +187,7 @@ public class ManageEventsStepDefs {
     private User registerUser(String username, boolean admin) {
         User user = new User();
         user.setId(username);
+        user.setFullName(username);
         user.setEmail(username + "@sample.app");
         user.setPassword(DEFAULT_PASSWORD);
         user.setAdmin(admin);

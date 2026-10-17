@@ -56,7 +56,7 @@ public class JoinLeaveEventsStepDefs {
         event.setMaxParticipants(maximum);
         event.setEstimatedCost(new BigDecimal("5.00"));
         event.setSubcategory(subcategoryNamed(DEFAULT_SUBCATEGORY));
-        event.setOwnedBy(owner);
+        event.setCreator(owner);
         eventRepository.save(event);
     }
 

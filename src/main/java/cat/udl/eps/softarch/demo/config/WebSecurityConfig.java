@@ -31,9 +31,25 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/users").authenticated()
                 .requestMatchers(HttpMethod.POST, "/users").anonymous()
                 .requestMatchers(HttpMethod.POST, "/users/*").denyAll()
+                .requestMatchers(HttpMethod.POST, "/categories", "/subcategories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/*").authenticated()     // Collection creation, e.g. POST /events
                 .requestMatchers(HttpMethod.GET, "/records").permitAll()    // Allow listing public records
                 .requestMatchers(HttpMethod.GET, "/records/*").permitAll()  // Allow retrieving public records
+                .requestMatchers(HttpMethod.GET, "/events", "/events/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/events").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/events/**").authenticated()
+                .requestMatchers(HttpMethod.PATCH, "/events/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/events/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/categories", "/categories/**",
+                        "/subcategories", "/subcategories/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/categories/**", "/subcategories/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/categories/**", "/subcategories/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/categories/**", "/subcategories/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/comments", "/comments/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/comments").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/comments/**").authenticated()
+                .requestMatchers(HttpMethod.PATCH, "/comments/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/comments/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.POST, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/*/*").authenticated()

@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface EventRepository extends CrudRepository<Event, Long>, PagingAndSortingRepository<Event, Long> {
 
     String OWNERSHIP_CLAUSE =
-        "e.ownedBy.id = ?#{authentication.name} " +
+        "e.creator.id = ?#{authentication.name} " +
         "OR ?#{hasRole('ADMIN')} = true";
 
     @Override
@@ -29,8 +29,8 @@ public interface EventRepository extends CrudRepository<Event, Long>, PagingAndS
     @Query("SELECT e FROM Event e WHERE e.id = :id AND (" + OWNERSHIP_CLAUSE + ")")
     Optional<Event> findById(@Param("id") Long id);
 
-    @Query("SELECT e FROM Event e WHERE e.ownedBy = :user AND (" + OWNERSHIP_CLAUSE + ")")
-    Page<Event> findByOwnedBy(@Param("user") User owner, Pageable pageable);
+    @Query("SELECT e FROM Event e WHERE e.creator = :user AND (" + OWNERSHIP_CLAUSE + ")")
+    Page<Event> findByCreator(@Param("user") User creator, Pageable pageable);
 
     // Bypasses the ownership clause so any signed-in student can join or leave an event
     @RestResource(exported = false)

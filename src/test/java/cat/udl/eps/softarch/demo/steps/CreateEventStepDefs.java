@@ -54,7 +54,7 @@ public class CreateEventStepDefs {
 
     @Given("a subcategory named {string} belongs to category {string}")
     public void aSubcategoryNamedBelongsToCategory(String name, String categoryName) {
-        Category category = categoryRepository.findByName(categoryName).stream().findFirst().orElseThrow();
+        Category category = categoryRepository.findByName(categoryName).orElseThrow();
         Subcategory subcategory = new Subcategory();
         subcategory.setName(name);
         subcategory.setCategory(category);
@@ -86,7 +86,7 @@ public class CreateEventStepDefs {
     @And("the created event is owned by {string}")
     public void theCreatedEventIsOwnedBy(String username) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get(createdEventUri + "/ownedBy")
+                get(createdEventUri + "/creator")
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())

@@ -70,9 +70,10 @@ public class Event extends UriEntity<Long> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant modified;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "creator_id", nullable = false, updatable = false)
     @JsonIdentityReference(alwaysAsId = true)
-    private User ownedBy;
+    private User creator;
 
     @JsonIgnore
     @RestResource(exported = false)

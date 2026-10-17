@@ -30,6 +30,11 @@ public class User extends UriEntity<String> implements UserDetails {
 	private String id;
 
 	@NotBlank
+	@Length(max = 40)
+	@Column(nullable = false, length = 40)
+	private String fullName;
+
+	@NotBlank
 	@Email
 	@Column(unique = true)
 	private String email;
