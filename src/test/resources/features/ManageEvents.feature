@@ -39,6 +39,15 @@ Feature: Manage events
       | estimatedCost   |
       | subcategory     |
 
+  Scenario: The owner updates an event without changing its subcategory
+    Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
+    And an event titled "Welcome picnic" exists and is owned by "amina"
+    And I login as "amina" with password "password"
+    When I update the event titled "Welcome picnic" with:
+      | title | Picnic without subcategory |
+    Then The response code is 200
+    And the event titled "Picnic without subcategory" is owned by "amina"
+
   Scenario: An unauthenticated visitor cannot update an event
     Given I'm not logged in
     And an event titled "Welcome picnic" exists and is owned by "amina"
