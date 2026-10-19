@@ -37,6 +37,7 @@ Feature: Manage events
       | dateTime        |
       | maxParticipants |
       | estimatedCost   |
+      | subcategory     |
 
   Scenario: The owner updates an event without changing its subcategory
     Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"

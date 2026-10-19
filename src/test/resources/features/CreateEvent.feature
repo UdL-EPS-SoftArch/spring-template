@@ -49,4 +49,3 @@ Feature: Create event
       | maxParticipants |
       | estimatedCost   |
       | subcategory     |
-      
