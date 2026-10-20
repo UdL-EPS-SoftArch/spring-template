@@ -58,7 +58,7 @@ public class EventParticipantsController {
     }
 
     private Event findEvent(Long id) {
-        return eventRepository.findAnyById(id)
+        return eventRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
     }
 
