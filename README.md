@@ -30,32 +30,155 @@ Template for a Spring Boot project including Spring REST, HATEOAS, JPA, etc. Add
 
 ```mermaid
 classDiagram
-    class UriEntity {
-        uri : String
+    class USER {
+        +int user_id PK
+        +string email UK
+        +string password_hash
+        +string username UK
+        +string full_name
+        +string role
+        +datetime created_at
+        +datetime updated_at
     }
 
-    class UserDetails
-    <<interface>> UserDetails
-
-    class User  {
-        username : String
-        password : String
-        email : String
+    class SUBJECT {
+        +int subject_id PK
+        +string name
+        +string description
+        +datetime created_at
+        +datetime updated_at
     }
 
-    class Record {
-        id: Long
-        name: String
-        description: String
-        created: ZonedDateTime
-        modified: ZonedDateTime
-        status: Status
+    class TEST {
+        +int test_id PK
+        +int subject_id FK
+        +int author_id FK
+        +string title
+        +string description
+        +string test_type
+        +string status
+        +int year
+        +string difficulty
+        +int max_score
+        +string tags
+        +boolean is_public
+        +datetime published_at
+        +datetime created_at
+        +datetime updated_at
     }
 
-    UriEntity <|-- User
-    UserDetails <|-- User
-    UriEntity <|-- Record
-    User "1" <-- "*" Record: ownedBy
+    class QUESTION {
+        +int question_id PK
+        +int test_id FK
+        +text question_text
+        +string question_type
+        +int order_index
+        +int score
+        +datetime created_at
+        +datetime updated_at
+    }
+
+    class ANSWER_OPTION {
+        +int option_id PK
+        +int question_id FK
+        +text option_text
+        +boolean is_correct
+        +int order_index
+    }
+
+    class TEST_ATTEMPT {
+        +int attempt_id PK
+        +int test_id FK
+        +int user_id FK
+        +string attempt_type
+        +string status
+        +int score
+        +int correct_count
+        +int incorrect_count
+        +int unanswered_count
+        +boolean counts_for_leaderboard
+        +datetime started_at
+        +datetime submitted_at
+    }
+
+    class ANSWER_ATTEMPT {
+        +int ANSWER_ATTEMPT_id PK
+        +int attempt_id FK
+        +int question_id FK
+        +int selected_option_id FK
+        +boolean is_correct
+        +decimal awarded_score
+        +datetime answered_at
+    }
+
+    class LEADERBOARD {
+        +int leaderboard_id PK
+        +int user_id FK
+        +int test_id FK
+        +int subject_id FK
+        +string leaderboard_type
+        +int score
+        +int rank
+        +datetime calculated_at
+    }
+
+    class BADGE {
+        +int badge_id PK
+        +string name UK
+        +string description
+        +string icon_url
+        +string requirement_type
+        +int requirement_value
+        +boolean is_active
+        +datetime created_at
+    }
+
+    class USER_BADGE {
+        +int user_badge_id PK
+        +int user_id FK
+        +int badge_id FK
+        +datetime earned_at
+        +boolean is_visible
+    }
+
+    class REPORT {
+        +int report_id PK
+        +int reporter_id FK
+        +int test_id FK
+        +int question_id FK
+        +string reason
+        +text description
+        +string status
+        +int resolved_by FK
+        +datetime created_at
+        +datetime resolved_at
+    }
+
+    USER "1" -- "0..*" TEST : authors
+    USER "1" -- "0..*" TEST_ATTEMPT : takes
+    USER "1" -- "0..*" ANSWER_ATTEMPT : answers
+    USER "1" -- "0..*" LEADERBOARD : ranks_in
+    USER "1" -- "0..*" USER_BADGE : earns
+    USER "1" -- "0..*" REPORT : submits
+    USER "1" -- "0..*" REPORT : resolves
+
+    SUBJECT "1" -- "0..*" TEST : contains
+    SUBJECT "1" -- "1" LEADERBOARD : groups
+
+    TEST "1" --> "0..*" QUESTION : contains
+    TEST "1" -- "0..*" TEST_ATTEMPT : is_taken_in
+    TEST "1" -- "0..1" LEADERBOARD : ranks
+    TEST "1" -- "0..*" REPORT : is_reported
+
+    QUESTION "1" --> "0..*" ANSWER_OPTION : has
+    QUESTION "1" -- "0..*" ANSWER_ATTEMPT : is_answered_in
+    QUESTION "1" -- "0..*" REPORT : is_reported
+
+    ANSWER_OPTION "1" -- "0..*" ANSWER_ATTEMPT : selected_as
+
+    TEST_ATTEMPT "1" -- "0..*" ANSWER_ATTEMPT : contains
+
+    BADGE "1" -- "0..*" USER_BADGE : awarded_as
 ```
 
 ## AI-Assisted Spec-Driven Development (SDD)
