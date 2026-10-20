@@ -44,9 +44,6 @@ public class User extends UriEntity<String> implements UserDetails {
 	@Length(min = 8, max = 256)
 	private String password;
 
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private boolean passwordReset;
-
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private boolean admin;
 
