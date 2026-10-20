@@ -18,11 +18,11 @@ import org.springframework.http.MediaType;
 
 import java.nio.charset.StandardCharsets;
 
-public class RegisterStepDefs {
+public class RegisterUserStepDefs {
   private final StepDefs stepDefs;
   private final UserRepository userRepository;
 
-  public RegisterStepDefs(StepDefs stepDefs, UserRepository userRepository) {
+  public RegisterUserStepDefs(StepDefs stepDefs, UserRepository userRepository) {
     this.stepDefs = stepDefs;
     this.userRepository = userRepository;
   }

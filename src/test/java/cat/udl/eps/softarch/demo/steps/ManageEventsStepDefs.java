@@ -153,6 +153,16 @@ public class ManageEventsStepDefs {
             .andExpect(jsonPath("$.username", is(username)));
     }
 
+    @Then("the event titled {string} is in subcategory {string}")
+    public void theEventTitledIsInSubcategory(String title, String subcategoryName) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(resolveEventUri(title) + "/subcategory")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andExpect(jsonPath("$.name", is(subcategoryName)));
+    }
+
     @Then("the event titled {string} does not exist")
     public void theEventTitledDoesNotExist(String title) throws Throwable {
         String uri = eventUrisByTitle.get(title);

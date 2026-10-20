@@ -75,7 +75,7 @@ class DemoApplicationTests {
 
 		assertThat(location).isNotNull();
 		Long eventId = Long.valueOf(location.substring(location.lastIndexOf('/') + 1));
-		assertThat(eventRepository.findAnyById(eventId))
+		assertThat(eventRepository.findById(eventId))
 				.hasValueSatisfying(event -> {
 					assertThat(event.getCreator().getId()).isEqualTo("demo");
 					assertThat(event.getSubcategory().getId()).isEqualTo(runningId);
