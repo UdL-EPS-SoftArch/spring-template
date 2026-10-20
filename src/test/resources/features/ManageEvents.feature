@@ -37,7 +37,14 @@ Feature: Manage events
       | dateTime        |
       | maxParticipants |
       | estimatedCost   |
-      | subcategory     |
+
+  Scenario: The owner replaces an event without a subcategory and keeps the stored one
+    Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
+    And an event titled "Welcome picnic" exists and is owned by "amina"
+    And I login as "amina" with password "password"
+    When I update the event titled "Welcome picnic" without "subcategory"
+    Then The response code is 200
+    And the event titled "Welcome picnic" is in subcategory "Meetups"
 
   Scenario: The owner updates an event without changing its subcategory
     Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
