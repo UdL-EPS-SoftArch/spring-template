@@ -37,4 +37,7 @@ public interface ReportRepository extends CrudRepository<Report, Long>, PagingAn
 
     @RestResource(exported = false)
     long countByReporter_IdAndEvent_Id(String reporterId, Long eventId);
+
+    @RestResource(exported = false)
+    long countByReporter_IdAndComment_Id(String reporterId, Long commentId);
 }

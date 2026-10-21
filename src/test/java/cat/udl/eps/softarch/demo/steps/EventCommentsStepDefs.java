@@ -1,6 +1,8 @@
 package cat.udl.eps.softarch.demo.steps;
 
+import cat.udl.eps.softarch.demo.domain.Comment;
 import cat.udl.eps.softarch.demo.domain.Event;
+import cat.udl.eps.softarch.demo.repository.CommentRepository;
 import cat.udl.eps.softarch.demo.repository.EventRepository;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -15,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.StreamSupport;
 
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -32,13 +36,16 @@ public class EventCommentsStepDefs {
 
     private final StepDefs stepDefs;
     private final EventRepository eventRepository;
+    private final CommentRepository commentRepository;
 
     // URI of the comment returned by the last successful creation, read back by the Then steps
     private String createdCommentUri;
 
-    public EventCommentsStepDefs(StepDefs stepDefs, EventRepository eventRepository) {
+    public EventCommentsStepDefs(StepDefs stepDefs, EventRepository eventRepository,
+                                 CommentRepository commentRepository) {
         this.stepDefs = stepDefs;
         this.eventRepository = eventRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Given("a comment with content {string} exists on the event titled {string} and is authored by {string}")
@@ -61,6 +68,30 @@ public class EventCommentsStepDefs {
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print());
+    }
+
+    @When("I delete the comment with content {string}")
+    public void iDeleteTheCommentWithContent(String content) throws Exception {
+        Comment comment = StreamSupport.stream(commentRepository.findAll().spliterator(), false)
+                .filter(candidate -> content.equals(candidate.getContent()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No comment with content \"" + content + "\" exists"));
+        stepDefs.result = stepDefs.mockMvc.perform(
+                delete(comment.getUri())
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print());
+    }
+
+    @Then("the comments list is empty")
+    public void theCommentsListIsEmpty() throws Exception {
+        stepDefs.result.andExpect(jsonPath("$..content", empty()));
+    }
+
+    @And("the comment with content {string} still exists")
+    public void theCommentStillExists(String content) {
+        org.junit.jupiter.api.Assertions.assertTrue(
+                StreamSupport.stream(commentRepository.findAll().spliterator(), false)
+                        .anyMatch(comment -> content.equals(comment.getContent())));
     }
 
     @Then("the comments include {string}")

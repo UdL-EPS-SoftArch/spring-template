@@ -106,6 +106,15 @@ public class JoinLeaveEventsStepDefs {
         }
     }
 
+    @When("^I (join|leave) an event that does not exist$")
+    public void iJoinOrLeaveAnEventThatDoesNotExist(String action) throws Exception {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                ("join".equals(action) ? post("/events/0/participants") : delete("/events/0/participants"))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print());
+    }
+
     @Then("{string} is registered only once for the event titled {string}")
     public void aUserIsRegisteredOnlyOnceForTheEvent(String username, String title) throws Exception {
         assertRegistrationCount(username, title, 1);
