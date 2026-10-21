@@ -3,6 +3,10 @@ Feature: List flagged content
   As an admin
   I want to list the flagged content
 
+  Background:
+    Given a category named "Social" exists
+    And a subcategory named "Meetups" belongs to category "Social"
+
   Scenario: An admin lists flagged content
     Given an admin user exists
     And an event titled "Welcome picnic" exists and is owned by "amina"
