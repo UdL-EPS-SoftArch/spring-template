@@ -18,3 +18,10 @@ Feature: Suspend user
     When I suspend the user "amina"
     Then The response code is 403
     And the user "amina" is not suspended
+
+  Scenario: An unauthenticated visitor cannot suspend a user
+    Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
+    And I'm not logged in
+    When I suspend the user "amina"
+    Then The response code is 401
+    And the user "amina" is not suspended
