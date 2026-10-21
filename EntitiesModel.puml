@@ -5,6 +5,7 @@ class User extends UriEntity implements UserDetails {
   fullName : String
   email : String
   password : String
+  admin : boolean
 }
 
 class Category extends UriEntity {
@@ -25,10 +26,17 @@ class Event extends UriEntity {
   dateTime : LocalDateTime
   maxParticipants : Integer
   estimatedCost : BigDecimal
+  created : Instant
+  modified : Instant
 }
 
-class EventParticipant extends UriEntity {
+class Record extends UriEntity {
   id : Long
+  name : String
+  description : String
+  status : Status
+  created : Instant
+  modified : Instant
 }
 
 class Comment extends UriEntity {
@@ -45,9 +53,9 @@ class UriEntity {
 Category "1" -- "0..*" Subcategory : contains
 Subcategory "1" -- "0..*" Event : classifies
 User "1" -- "0..*" Event : creates
-Event "1" -- "0..*" EventParticipant : has participants
-User "1" -- "0..*" EventParticipant : joins
+Event "0..*" -- "0..*" User : participants
 Event "1" -- "0..*" Comment : has comments
 User "1" -- "0..*" Comment : writes
+User "1" -- "0..*" Record : owns
 
 @enduml
