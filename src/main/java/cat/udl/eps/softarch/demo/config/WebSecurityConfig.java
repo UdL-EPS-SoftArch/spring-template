@@ -28,21 +28,17 @@ public class WebSecurityConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers(HttpMethod.GET, "/identity").authenticated()
+                .requestMatchers("/users/*/suspension").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
                 .requestMatchers(HttpMethod.POST, "/users").anonymous()
-<<<<<<< Updated upstream
-                .requestMatchers(HttpMethod.POST, "/users/*").denyAll()
-                .requestMatchers("/users/*/suspension").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/reports", "/reports/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/reports/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/reports/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/reports/**").hasRole("ADMIN")
-=======
                 .requestMatchers(HttpMethod.POST, "/users/**").denyAll()
                 .requestMatchers(HttpMethod.PUT, "/users/**").authenticated()
                 .requestMatchers(HttpMethod.PATCH, "/users/**").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated()
->>>>>>> Stashed changes
+                .requestMatchers(HttpMethod.GET, "/reports", "/reports/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/reports/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/reports/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/reports/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/categories", "/subcategories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/*").authenticated()     // Collection creation, e.g. POST /events
                 .requestMatchers(HttpMethod.GET, "/records").permitAll()    // Allow listing public records

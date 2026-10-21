@@ -16,7 +16,6 @@ import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
 import org.springframework.data.rest.core.annotation.HandleBeforeLinkSave;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
-<<<<<<< Updated upstream
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,17 +23,6 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
 import java.util.Set;
-=======
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.util.UriUtils;
-
-import java.nio.charset.StandardCharsets;
->>>>>>> Stashed changes
 
 @Component
 @RepositoryEventHandler
@@ -58,9 +46,8 @@ public class UserEventHandler {
 
     @HandleBeforeSave
     public void handleUserPreSave(User user) {
-        ensureCurrentUserOrAdmin();
-        logger.info("Before updating: {}", user.toString());
         ensureSelfOrAdmin(user);
+        logger.info("Before updating: {}", user.toString());
         encodeNewPassword(user);
     }
 
@@ -82,9 +69,8 @@ public class UserEventHandler {
 
     @HandleBeforeDelete
     public void handleUserPreDelete(User user) {
-        ensureCurrentUserOrAdmin();
-        logger.info("Before deleting: {}", user.toString());
         ensureSelfOrAdmin(user);
+        logger.info("Before deleting: {}", user.toString());
     }
 
     private void ensureSelfOrAdmin(User user) {
@@ -122,31 +108,4 @@ public class UserEventHandler {
         logger.info("After linking: {} to {}", user.toString(), o.toString());
     }
 
-    private void ensureCurrentUserOrAdmin() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getAuthorities().stream()
-                .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()))) {
-            return;
-        }
-
-        if (!isRequestForAuthenticatedUser(authentication)) {
-            throw new AccessDeniedException("Users can only manage their own profile");
-        }
-    }
-
-    private boolean isRequestForAuthenticatedUser(Authentication authentication) {
-        if (!(RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes requestAttributes)) {
-            return false;
-        }
-
-        String requestPath = requestAttributes.getRequest().getRequestURI()
-                .substring(requestAttributes.getRequest().getContextPath().length());
-        int usersPathIndex = requestPath.indexOf("/users/");
-        if (usersPathIndex < 0) {
-            return false;
-        }
-
-        String requestedUserId = requestPath.substring(usersPathIndex + "/users/".length()).split("/", 2)[0];
-        return authentication.getName().equals(UriUtils.decode(requestedUserId, StandardCharsets.UTF_8));
-    }
 }
