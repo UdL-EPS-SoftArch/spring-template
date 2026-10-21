@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.demo.steps;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -14,10 +15,12 @@ import io.cucumber.java.en.When;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.stream.StreamSupport;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 public class EventOptimisticLockingStepDefs {
     private final StepDefs stepDefs;
@@ -28,6 +31,9 @@ public class EventOptimisticLockingStepDefs {
     private String initialBody;
     private ResultActions client1Result;
     private ResultActions client2Result;
+    private Event entityA;
+    private Event entityB;
+    private RuntimeException saveException;
 
     public EventOptimisticLockingStepDefs(StepDefs stepDefs, EventRepository eventRepository) {
         this.stepDefs = stepDefs;
@@ -70,12 +76,47 @@ public class EventOptimisticLockingStepDefs {
         stepDefs.result = client2Result;
     }
 
-    @Then("client 2 update is rejected with a client error")
-    public void clientUpdateIsRejectedWithAClientError() throws Throwable {
+    @Then("client 2 update is rejected with status {int}")
+    public void clientUpdateIsRejectedWithStatus(int code) throws Throwable {
         MockHttpServletResponse response = client2Result.andReturn().getResponse();
         System.out.println("[optimistic-locking] client 2 status = " + response.getStatus()
                 + ", body = " + response.getContentAsString());
-        client2Result.andExpect(status().is4xxClientError());
+        client2Result.andExpect(status().is(code));
+    }
+
+    @Given("the event titled {string} is loaded twice from the repository")
+    public void theEventIsLoadedTwiceFromTheRepository(String title) {
+        entityA = loadEventTitled(title);
+        entityB = loadEventTitled(title);
+    }
+
+    @When("the first copy of the event is changed to address {string} and saved")
+    public void theFirstCopyIsChangedAndSaved(String address) {
+        entityA.setAddress(address);
+        eventRepository.save(entityA);
+    }
+
+    @When("the second copy of the event is changed to address {string} and saved")
+    public void theSecondCopyIsChangedAndSaved(String address) {
+        entityB.setAddress(address);
+        try {
+            eventRepository.save(entityB);
+        } catch (RuntimeException e) {
+            saveException = e;
+        }
+    }
+
+    @Then("an optimistic locking exception is thrown")
+    public void anOptimisticLockingExceptionIsThrown() {
+        System.out.println("[optimistic-locking] repository save threw: " + saveException);
+        assertInstanceOf(OptimisticLockingFailureException.class, saveException);
+    }
+
+    private Event loadEventTitled(String title) {
+        return StreamSupport.stream(eventRepository.findAll().spliterator(), false)
+                .filter(e -> title.equals(e.getTitle()))
+                .findFirst()
+                .orElseThrow();
     }
 
     private MockHttpServletResponse getEvent() throws Throwable {
@@ -88,10 +129,13 @@ public class EventOptimisticLockingStepDefs {
     }
 
     private ResultActions patchAddress(String address, String etag) throws Throwable {
+        MockHttpServletRequestBuilder request = patch(eventUri);
+        if (etag != null) {
+            request.header(HttpHeaders.IF_MATCH, etag);
+        }
         return stepDefs.mockMvc.perform(
-                patch(eventUri)
+                request
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header(HttpHeaders.IF_MATCH, etag)
                     .content(stepDefs.mapper.writeValueAsString(Map.of("address", address)))
                     .characterEncoding(StandardCharsets.UTF_8)
                     .accept(MediaType.APPLICATION_JSON)
