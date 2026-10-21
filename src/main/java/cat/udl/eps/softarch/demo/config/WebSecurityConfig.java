@@ -31,6 +31,11 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/users").authenticated()
                 .requestMatchers(HttpMethod.POST, "/users").anonymous()
                 .requestMatchers(HttpMethod.POST, "/users/*").denyAll()
+                .requestMatchers("/users/*/suspension").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/reports", "/reports/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/reports/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/reports/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/reports/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/categories", "/subcategories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/*").authenticated()     // Collection creation, e.g. POST /events
                 .requestMatchers(HttpMethod.GET, "/records").permitAll()    // Allow listing public records
@@ -60,7 +65,10 @@ public class WebSecurityConfig {
             .csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
-            .httpBasic((httpBasic) -> httpBasic.realmName("demo"));
+            .httpBasic((httpBasic) -> httpBasic
+                .realmName("demo")
+                .authenticationEntryPoint(new ApiAuthenticationEntryPoint("demo")))
+            .logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/"));
         return http.build();
     }
 

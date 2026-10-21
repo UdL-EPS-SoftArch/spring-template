@@ -24,4 +24,9 @@ public interface EventRepository extends CrudRepository<Event, Long>, PagingAndS
     Page<Event> findByCreator(@Param("user") User creator, Pageable pageable);
 
     List<Event> findBySubcategory_Category_NameIgnoreCase(@Param("name") String name);
+
+    List<Event> findByTitleContainingIgnoreCase(@Param("keyword") String keyword);
+
+    List<Event> findByTitleContainingIgnoreCaseAndSubcategory_Category_NameIgnoreCase(
+        @Param("keyword") String keyword, @Param("category") String category);
 }
