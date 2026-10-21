@@ -3,7 +3,7 @@ Feature: Edit profile
   As a registered Erasmus student
   I want to edit my own profile
 
-  Scenario:   Scenario: A student updates their own profile
+  Scenario: A student updates their own profile
     Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
     And I login as "amina" with password "password"
     When I update my profile with:
