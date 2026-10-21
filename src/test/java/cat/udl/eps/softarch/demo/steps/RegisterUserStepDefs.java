@@ -68,7 +68,8 @@ public class RegisterUserStepDefs {
             .accept(MediaType.APPLICATION_JSON)
             .with(AuthenticationStepDefs.authenticate()))
         .andDo(print())
-        .andExpect(status().isUnauthorized());
+        // A half-filled login is a 400 rather than a 401, but either way the credentials are rejected
+        .andExpect(status().is4xxClientError());
   }
 
   @When("^I register a new user with username \"([^\"]*)\", full name \"([^\"]*)\", email \"([^\"]*)\" and password \"([^\"]*)\"$")

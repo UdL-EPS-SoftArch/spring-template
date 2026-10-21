@@ -3,6 +3,10 @@ Feature: Remove inappropriate event
   As an admin
   I want to remove events that have been flagged as inappropriate
 
+  Background:
+    Given a category named "Social" exists
+    And a subcategory named "Meetups" belongs to category "Social"
+
   Scenario: An admin removes an inappropriate event that was flagged
     Given an admin user exists
     And an event titled "Welcome picnic" exists and is owned by "amina"

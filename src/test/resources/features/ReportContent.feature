@@ -3,6 +3,10 @@ Feature: Report inappropriate content
   As a registered Erasmus student
   I want to report inappropriate events and comments
 
+  Background:
+    Given a category named "Social" exists
+    And a subcategory named "Meetups" belongs to category "Social"
+
   Scenario: An authenticated user successfully reports an event
     Given There is a registered user with username "luca" and password "password" and email "luca@sample.app"
     And an event titled "Welcome picnic" exists and is owned by "amina"
@@ -12,6 +16,7 @@ Feature: Report inappropriate content
 
   Scenario: An authenticated user successfully reports a comment
     Given There is a registered user with username "luca" and password "password" and email "luca@sample.app"
+    And an event titled "Welcome picnic" exists and is owned by "amina"
     And a comment with content "Inappropriate comment" exists on the event titled "Welcome picnic" and is authored by "amina"
     And I login as "luca" with password "password"
     When I report the comment with content "Inappropriate comment"
