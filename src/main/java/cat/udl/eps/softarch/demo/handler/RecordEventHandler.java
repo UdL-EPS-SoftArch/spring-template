@@ -4,6 +4,8 @@ import cat.udl.eps.softarch.demo.domain.Record;
 import cat.udl.eps.softarch.demo.domain.User;
 import cat.udl.eps.softarch.demo.repository.RecordRepository;
 import org.springframework.data.rest.core.annotation.*;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +29,33 @@ public class RecordEventHandler {
 
     @HandleBeforeSave
     public void handleRecordPreSave(Record record) {
-        User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!owner.getUsername().equals(record.getOwnedBy().getUsername())) {
-            throw new SecurityException("Only the owner can modify the record");
+        ensureOwnerOrAdmin(record, "modify");
+    }
+
+    @HandleBeforeDelete
+    public void handleRecordPreDelete(Record record) {
+        ensureOwnerOrAdmin(record, "delete");
+    }
+
+    @HandleBeforeLinkSave
+    public void handleRecordPreLinkSave(Record record, Object linkedEntity) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!isAdmin(authentication)) {
+            throw new AccessDeniedException("Only administrators can change record relationships");
         }
+    }
+
+    private void ensureOwnerOrAdmin(Record record, String action) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!isAdmin(authentication)
+                && (record.getOwnedBy() == null
+                    || !authentication.getName().equals(record.getOwnedBy().getUsername()))) {
+            throw new AccessDeniedException("Only the owner or an administrator can " + action + " the record");
+        }
+    }
+
+    private boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
     }
 }
