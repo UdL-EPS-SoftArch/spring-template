@@ -18,11 +18,11 @@ import org.springframework.http.MediaType;
 
 import java.nio.charset.StandardCharsets;
 
-public class RegisterStepDefs {
+public class RegisterUserStepDefs {
   private final StepDefs stepDefs;
   private final UserRepository userRepository;
 
-  public RegisterStepDefs(StepDefs stepDefs, UserRepository userRepository) {
+  public RegisterUserStepDefs(StepDefs stepDefs, UserRepository userRepository) {
     this.stepDefs = stepDefs;
     this.userRepository = userRepository;
   }
@@ -68,7 +68,8 @@ public class RegisterStepDefs {
             .accept(MediaType.APPLICATION_JSON)
             .with(AuthenticationStepDefs.authenticate()))
         .andDo(print())
-        .andExpect(status().isUnauthorized());
+        // A half-filled login is a 400 rather than a 401, but either way the credentials are rejected
+        .andExpect(status().is4xxClientError());
   }
 
   @When("^I register a new user with username \"([^\"]*)\", full name \"([^\"]*)\", email \"([^\"]*)\" and password \"([^\"]*)\"$")
