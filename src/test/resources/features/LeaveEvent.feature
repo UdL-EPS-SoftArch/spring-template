@@ -31,3 +31,9 @@ Feature: Leave event
     And an event titled "Welcome picnic" exists and is owned by "amina"
     When I leave the event titled "Welcome picnic"
     Then The response code is 401
+
+  Scenario: A student cannot leave an event that does not exist
+    Given There is a registered user with username "luca" and password "password" and email "luca@sample.app"
+    And I login as "luca" with password "password"
+    When I leave an event that does not exist
+    Then The response code is 404

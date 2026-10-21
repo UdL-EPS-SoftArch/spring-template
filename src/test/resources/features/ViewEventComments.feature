@@ -22,3 +22,10 @@ Feature: View event comments
     Given I'm not logged in
     When I view comments for the event titled "Missing event"
     Then The response code is 404
+
+  Scenario: A visitor views an event that has no comments
+    Given I'm not logged in
+    And an event titled "Welcome picnic" exists and is owned by "amina"
+    When I view comments for the event titled "Welcome picnic"
+    Then The response code is 200
+    And the comments list is empty
