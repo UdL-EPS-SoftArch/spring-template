@@ -32,28 +32,92 @@ Backend REST service for the VibeCheck platform, built with Spring Boot.
 ```mermaid
 classDiagram
     class UriEntity {
+        <<abstract>>
         uri : String
+        version : Long
     }
 
-    class UserDetails
-    <<interface>> UserDetails
+    class UserDetails {
+        <<interface>>
+    }
 
-    class User  {
+    class User {
         username : String
-        password : String
+        fullName : String
         email : String
+        password : String
+        admin : boolean
+        suspended : boolean
+    }
+
+    class Category {
+        id : Long
+        name : String
+    }
+
+    class Subcategory {
+        id : Long
+        name : String
+    }
+
+    class Event {
+        id : Long
+        title : String
+        description : String
+        address : String
+        dateTime : LocalDateTime
+        maxParticipants : Integer
+        estimatedCost : BigDecimal
+        created : Instant
+        modified : Instant
+    }
+
+    class Comment {
+        id : Long
+        content : String
+        createdAt : Instant
+    }
+
+    class Report {
+        id : Long
+        createdAt : Instant
     }
 
     class Record {
-        id: Long
-        name: String
-        description: String
-        created: ZonedDateTime
-        modified: ZonedDateTime
-        status: Status
+        id : Long
+        name : String
+        description : String
+        status : Status
+        created : Instant
+        modified : Instant
+    }
+
+    class Status {
+        <<enumeration>>
+        PUBLIC
+        PRIVATE
     }
 
     UriEntity <|-- User
-    UserDetails <|-- User
+    UriEntity <|-- Category
+    UriEntity <|-- Subcategory
+    UriEntity <|-- Event
+    UriEntity <|-- Comment
+    UriEntity <|-- Report
     UriEntity <|-- Record
-    User "1" <-- "*" Record: ownedBy
+    UserDetails <|.. User
+
+    Category "1" --> "0..*" Subcategory : contains
+    Subcategory "1" --> "0..*" Event : classifies
+    User "1" --> "0..*" Event : creator
+    Event "0..*" --> "0..*" User : participants
+    Event "1" --> "0..*" Comment : comments
+    User "1" --> "0..*" Comment : author
+    User "1" --> "0..*" Record : ownedBy
+    User "1" --> "0..*" Report : reporter
+    Event "0..1" <-- "0..*" Report : event
+    Comment "0..1" <-- "0..*" Report : comment
+    Record --> Status
+```
+
+A `Report` targets exactly one event or one comment; deleting the target also deletes its reports.
