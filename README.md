@@ -83,20 +83,6 @@ classDiagram
         createdAt : Instant
     }
 
-    class Record {
-        id : Long
-        name : String
-        description : String
-        status : Status
-        created : Instant
-        modified : Instant
-    }
-
-    class Status {
-        <<enumeration>>
-        PUBLIC
-        PRIVATE
-    }
 
     UriEntity <|-- User
     UriEntity <|-- Category
@@ -104,20 +90,17 @@ classDiagram
     UriEntity <|-- Event
     UriEntity <|-- Comment
     UriEntity <|-- Report
-    UriEntity <|-- Record
     UserDetails <|.. User
 
-    Category "1" --> "0..*" Subcategory : contains
-    Subcategory "1" --> "0..*" Event : classifies
-    User "1" --> "0..*" Event : creator
+    Subcategory "0..*" --> "1" Category : category
+    Event "0..*" --> "1" Subcategory : subcategory
+    Event "0..*" --> "1" User : creator
     Event "0..*" --> "0..*" User : participants
-    Event "1" --> "0..*" Comment : comments
-    User "1" --> "0..*" Comment : author
-    User "1" --> "0..*" Record : ownedBy
-    User "1" --> "0..*" Report : reporter
-    Event "0..1" <-- "0..*" Report : event
-    Comment "0..1" <-- "0..*" Report : comment
-    Record --> Status
+    Comment "0..*" --> "1" Event : event
+    Comment "0..*" --> "1" User : author
+    Report "0..*" --> "1" User : reporter
+    Report "0..*" --> "0..1" Event : event
+    Report "0..*" --> "0..1" Comment : comment
 ```
 
 A `Report` targets exactly one event or one comment; deleting the target also deletes its reports.

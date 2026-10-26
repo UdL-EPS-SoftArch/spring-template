@@ -1,7 +1,6 @@
 package cat.udl.eps.softarch.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
@@ -11,12 +10,10 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -72,18 +69,9 @@ public class Event extends UriEntity<Long> {
     private Instant modified;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "creator_id", nullable = false, updatable = false)
     @JsonIdentityReference(alwaysAsId = true)
     private User creator;
 
-    @JsonIgnore
-    @RestResource(exported = false)
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> participants = new HashSet<>();
-
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
 }
