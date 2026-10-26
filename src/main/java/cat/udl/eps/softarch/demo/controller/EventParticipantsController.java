@@ -7,6 +7,7 @@ import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +32,9 @@ public class EventParticipantsController {
     }
 
     @PostMapping("/events/{id}/participants")
+    @Transactional
     public ResponseEntity<Void> join(@PathVariable Long id) {
-        Event event = findEvent(id);
+        Event event = findEventForUpdate(id);
         String username = currentUsername();
         if (isRegistered(event, username)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Already registered for this event");
@@ -46,8 +48,9 @@ public class EventParticipantsController {
     }
 
     @DeleteMapping("/events/{id}/participants")
+    @Transactional
     public ResponseEntity<Void> leave(@PathVariable Long id) {
-        Event event = findEvent(id);
+        Event event = findEventForUpdate(id);
         String username = currentUsername();
         if (!isRegistered(event, username)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not registered for this event");
@@ -59,6 +62,12 @@ public class EventParticipantsController {
 
     private Event findEvent(Long id) {
         return eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+    }
+
+    // Pessimistic lock: concurrent joins and leaves on the same event wait for each other until the transaction ends.
+    private Event findEventForUpdate(Long id) {
+        return eventRepository.findByIdForUpdate(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
     }
 

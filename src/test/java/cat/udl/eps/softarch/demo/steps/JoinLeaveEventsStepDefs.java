@@ -3,6 +3,7 @@ package cat.udl.eps.softarch.demo.steps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import jakarta.persistence.EntityManager;
 import org.springframework.http.MediaType;
 import tools.jackson.databind.JsonNode;
 import cat.udl.eps.softarch.demo.domain.Event;
@@ -14,7 +15,14 @@ import cat.udl.eps.softarch.demo.repository.UserRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,13 +42,17 @@ public class JoinLeaveEventsStepDefs {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final SubcategoryRepository subcategoryRepository;
+    private final EntityManager entityManager;
+    private final List<Integer> concurrentJoinStatuses = new ArrayList<>();
 
     public JoinLeaveEventsStepDefs(StepDefs stepDefs, EventRepository eventRepository,
-                                   UserRepository userRepository, SubcategoryRepository subcategoryRepository) {
+                                   UserRepository userRepository, SubcategoryRepository subcategoryRepository,
+                                   EntityManager entityManager) {
         this.stepDefs = stepDefs;
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.subcategoryRepository = subcategoryRepository;
+        this.entityManager = entityManager;
     }
 
     @Given("an event titled {string} with maximum {int} participant exists and is owned by {string}")
@@ -109,6 +121,47 @@ public class JoinLeaveEventsStepDefs {
     @Then("{string} is registered only once for the event titled {string}")
     public void aUserIsRegisteredOnlyOnceForTheEvent(String username, String title) throws Exception {
         assertRegistrationCount(username, title, 1);
+    }
+
+    // Both requests wait on a barrier so they are sent at the same moment. The assertions do not depend on which
+    // request reaches the database first: the pessimistic lock makes one join win and the other see the event full.
+    @When("^\"([^\"]+)\" and \"([^\"]+)\" try to join the event titled \"([^\"]+)\" at the same time$")
+    public void twoUsersTryToJoinTheEventAtTheSameTime(String first, String second, String title) throws Exception {
+        String uri = participantsUri(title);
+        CyclicBarrier startLine = new CyclicBarrier(2);
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        try {
+            List<Future<Integer>> attempts = Stream.of(first, second)
+                    .map(username -> executor.submit(() -> {
+                        startLine.await();
+                        return stepDefs.mockMvc.perform(
+                                post(uri)
+                                    .accept(MediaType.APPLICATION_JSON)
+                                    .with(httpBasic(username, DEFAULT_PASSWORD)))
+                            .andReturn().getResponse().getStatus();
+                    }))
+                    .toList();
+            for (Future<Integer> attempt : attempts) {
+                concurrentJoinStatuses.add(attempt.get(30, TimeUnit.SECONDS));
+            }
+        } finally {
+            executor.shutdownNow();
+        }
+    }
+
+    @Then("the two join attempts are answered with 201 and 409")
+    public void theTwoJoinAttemptsAreAnsweredWith201And409() {
+        assertEquals(List.of(201, 409), concurrentJoinStatuses.stream().sorted().toList());
+    }
+
+    @Then("the event titled {string} has {int} participant(s) in the database")
+    public void theEventHasParticipantsInTheDatabase(String title, int expected) {
+        // Counts join-table rows, so a duplicated participation would be visible (a Set would hide it in memory).
+        Long rows = entityManager.createQuery(
+                        "SELECT COUNT(p) FROM Event e JOIN e.participants p WHERE e.id = :id", Long.class)
+                .setParameter("id", eventTitled(title).getId())
+                .getSingleResult();
+        assertEquals(expected, rows.intValue(), "Unexpected participation rows for " + title);
     }
 
     private void assertRegistrationCount(String username, String title, int expectedCount) throws Exception {

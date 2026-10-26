@@ -42,3 +42,12 @@ Feature: Join event
     And an event titled "Welcome picnic" exists and is owned by "amina"
     When I join the event titled "Welcome picnic"
     Then The response code is 401
+
+  Scenario: Two students compete for the last place and only one gets it
+    Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
+    And There is a registered user with username "luca" and password "password" and email "luca@sample.app"
+    And There is a registered user with username "sam" and password "password" and email "sam@sample.app"
+    And an event titled "Welcome picnic" with maximum 1 participant exists and is owned by "amina"
+    When "luca" and "sam" try to join the event titled "Welcome picnic" at the same time
+    Then the two join attempts are answered with 201 and 409
+    And the event titled "Welcome picnic" has 1 participant in the database
