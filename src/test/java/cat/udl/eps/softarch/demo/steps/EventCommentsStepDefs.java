@@ -64,7 +64,7 @@ public class EventCommentsStepDefs {
     @When("I view comments for the event titled {string}")
     public void iViewCommentsForTheEventTitled(String title) throws Exception {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get(eventUri(title) + "/comments")
+                get("/comments/search/findByEvent").param("event", eventUri(title))
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print());

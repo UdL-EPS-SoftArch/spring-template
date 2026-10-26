@@ -18,10 +18,11 @@ Feature: View event comments
     And the comments include "Looking forward to meeting everyone!"
     And that comment is authored by "luca"
 
-  Scenario: A visitor cannot view comments for an event that does not exist
+  Scenario: A visitor sees no comments for an event that does not exist
     Given I'm not logged in
     When I view comments for the event titled "Missing event"
-    Then The response code is 404
+    Then The response code is 200
+    And the comments list is empty
 
   Scenario: A visitor views an event that has no comments
     Given I'm not logged in

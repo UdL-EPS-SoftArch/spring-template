@@ -49,31 +49,15 @@ class Report extends UriEntity {
   createdAt : Instant
 }
 
-class Record extends UriEntity {
-  id : Long
-  name : String
-  description : String
-  status : Status
-  created : Instant
-  modified : Instant
-}
-
-enum Status {
-  PUBLIC
-  PRIVATE
-}
-
 Category "1" -- "0..*" Subcategory : contains
 Subcategory "1" -- "0..*" Event : classifies
 User "1" -- "0..*" Event : creator
 Event "0..*" -- "0..*" User : participants
-Event "1" -- "0..*" Comment : comments
+Comment "0..*" -- "1" Event : event
 User "1" -- "0..*" Comment : author
-User "1" -- "0..*" Record : ownedBy
 User "1" -- "0..*" Report : reporter
 Event "0..1" -- "0..*" Report : reported event
 Comment "0..1" -- "0..*" Report : reported comment
-Record --> Status
 
 note "A report targets exactly one\nevent or one comment.\nUnique per (reporter, target)." as N1
 Report .. N1

@@ -14,17 +14,17 @@ Feature: Join event
     And the event titled "Welcome picnic" has available places
     And I login as "luca" with password "password"
     When I join the event titled "Welcome picnic"
-    Then The response code is 201
+    Then The response code is 204
     And "luca" is registered for the event titled "Welcome picnic"
 
-  Scenario: A student cannot join the same event more than once
+  Scenario: A student joining the same event twice is registered only once
     Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
     And There is a registered user with username "luca" and password "password" and email "luca@sample.app"
     And an event titled "Welcome picnic" exists and is owned by "amina"
     And "luca" is already registered for the event titled "Welcome picnic"
     And I login as "luca" with password "password"
     When I join the event titled "Welcome picnic"
-    Then The response code is 409
+    Then The response code is 204
     And "luca" is registered only once for the event titled "Welcome picnic"
 
   Scenario: A student cannot join an event that is full

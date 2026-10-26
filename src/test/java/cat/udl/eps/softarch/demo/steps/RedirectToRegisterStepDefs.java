@@ -57,6 +57,8 @@ public class RedirectToRegisterStepDefs {
     public void iTryToJoinTheEvent(String title) throws Exception {
         stepDefs.result = stepDefs.mockMvc.perform(
                 post(eventTitled(title).getUri() + "/participants")
+                    .contentType(MediaType.parseMediaType("text/uri-list"))
+                    .content("http://localhost/users/visitor")
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print());
