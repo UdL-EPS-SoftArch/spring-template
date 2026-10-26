@@ -41,12 +41,7 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/reports/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/categories", "/subcategories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/*").authenticated()     // Collection creation, e.g. POST /events
-                .requestMatchers(HttpMethod.GET, "/records").permitAll()    // Allow listing public records
-                .requestMatchers(HttpMethod.GET, "/records/*").permitAll()  // Allow retrieving public records
-                .requestMatchers(HttpMethod.POST, "/records/**").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/records/**").authenticated()
-                .requestMatchers(HttpMethod.PATCH, "/records/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/records/**").authenticated()
+                .requestMatchers("/events/*/participants", "/events/*/participants/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/events", "/events/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/events").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/events/**").authenticated()
@@ -67,7 +62,6 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.PATCH, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/*/*").authenticated()
-                .requestMatchers("/events/*/participants").authenticated()  // Join and leave events
                 .anyRequest().permitAll())
             .csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

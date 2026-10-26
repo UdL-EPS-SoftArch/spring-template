@@ -49,3 +49,22 @@ Feature: Create event
       | maxParticipants |
       | estimatedCost   |
       | subcategory     |
+
+  Scenario Outline: An event cannot be created with an invalid value
+    Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
+    And I login as "amina" with password "password"
+    When I create an event with:
+      | title           | Welcome picnic              |
+      | description     | Meet other Erasmus students |
+      | address         | City park                   |
+      | dateTime        | 2030-11-10T16:00:00         |
+      | maxParticipants | <maxParticipants>           |
+      | estimatedCost   | <estimatedCost>             |
+      | subcategory     | Meetups                     |
+    Then The response code is 400
+
+    Examples:
+      | maxParticipants | estimatedCost |
+      | 0               | 5.00          |
+      | -3              | 5.00          |
+      | 20              | -1.00         |
