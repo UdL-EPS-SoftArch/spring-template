@@ -7,6 +7,7 @@ import io.cucumber.java.en.When;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,6 +37,14 @@ public class SuspendUserStepDefs {
     public void iSuspendTheUser(String username) throws Exception {
         stepDefs.result = stepDefs.mockMvc.perform(
                 put("/users/{username}/suspension", username)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print());
+    }
+
+    @When("I reactivate the user {string}")
+    public void iReactivateTheUser(String username) throws Exception {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                delete("/users/{username}/suspension", username)
                     .with(AuthenticationStepDefs.authenticate()))
             .andDo(print());
     }

@@ -31,3 +31,10 @@ Feature: Search public events
     When I search public events for "concert"
     Then The response code is 200
     And the public events list is empty
+
+  Scenario: A keyword search within a category with no matches returns an empty list
+    Given I'm not logged in
+    And an event titled "Museum visit" exists in subcategory "Museums"
+    When I search public events for "picnic" in category "Culture"
+    Then The response code is 200
+    And the public events list is empty

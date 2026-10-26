@@ -36,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class JoinLeaveEventsStepDefs {
     private static final String DEFAULT_PASSWORD = "password";
+    private static final MediaType URI_LIST = MediaType.parseMediaType("text/uri-list");
     private static final String DEFAULT_SUBCATEGORY = "Meetups";
 
     private final StepDefs stepDefs;
@@ -86,6 +87,8 @@ public class JoinLeaveEventsStepDefs {
         if (AuthenticationStepDefs.currentUsername == null || AuthenticationStepDefs.currentUsername.isEmpty()) {
             stepDefs.result = stepDefs.mockMvc.perform(
                     post(participantsUri(title))
+                        .contentType(URI_LIST)
+                        .content(userUri(username))
                         .with(httpBasic(username, DEFAULT_PASSWORD)))
                 .andDo(print());
         } else {
@@ -101,21 +104,36 @@ public class JoinLeaveEventsStepDefs {
     @When("^I (join|leave) the event titled \"([^\"]+)\"$")
     public void iJoinOrLeaveTheEvent(String action, String title) throws Exception {
         String uri = participantsUri(title);
+        String username = AuthenticationStepDefs.currentUsername;
         if ("join".equals(action)) {
             stepDefs.result = stepDefs.mockMvc.perform(
                     post(uri)
+                        .contentType(URI_LIST)
+                        .content(userUri(username))
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         } else if ("leave".equals(action)) {
             stepDefs.result = stepDefs.mockMvc.perform(
-                    delete(uri)
+                    delete(uri + "/" + username)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         } else {
             throw new IllegalArgumentException("Unsupported event action: " + action);
         }
+    }
+
+    @When("^I (join|leave) an event that does not exist$")
+    public void iJoinOrLeaveAnEventThatDoesNotExist(String action) throws Exception {
+        String username = AuthenticationStepDefs.currentUsername;
+        stepDefs.result = stepDefs.mockMvc.perform(
+                ("join".equals(action)
+                        ? post("/events/0/participants").contentType(URI_LIST).content(userUri(username))
+                        : delete("/events/0/participants/" + username))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print());
     }
 
     @Then("{string} is registered only once for the event titled {string}")
@@ -225,6 +243,10 @@ public class JoinLeaveEventsStepDefs {
 
     private String textValue(JsonNode node) {
         return node != null && node.isString() ? node.stringValue() : null;
+    }
+
+    private String userUri(String username) {
+        return "http://localhost/users/" + username;
     }
 
     private String participantsUri(String title) {

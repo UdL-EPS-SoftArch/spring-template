@@ -1,10 +1,19 @@
 @startuml
 
+interface UserDetails
+
+abstract class UriEntity {
+  uri : String
+  version : Long
+}
+
 class User extends UriEntity implements UserDetails {
-  username : String
+  username : String <<id>>
   fullName : String
   email : String
-  password : String
+  password : String <<write-only>>
+  admin : boolean <<read-only>>
+  suspended : boolean <<read-only>>
 }
 
 class Category extends UriEntity {
@@ -20,15 +29,13 @@ class Subcategory extends UriEntity {
 class Event extends UriEntity {
   id : Long
   title : String
-  description : String
+  description : String <<max 500>>
   address : String
   dateTime : LocalDateTime
-  maxParticipants : Integer
-  estimatedCost : BigDecimal
-}
-
-class EventParticipant extends UriEntity {
-  id : Long
+  maxParticipants : Integer <<> 0>>
+  estimatedCost : BigDecimal <<>= 0>>
+  created : Instant
+  modified : Instant
 }
 
 class Comment extends UriEntity {
@@ -37,17 +44,22 @@ class Comment extends UriEntity {
   createdAt : Instant
 }
 
-class UriEntity {
-  uri : String
-  version : Long
+class Report extends UriEntity {
+  id : Long
+  createdAt : Instant
 }
 
 Category "1" -- "0..*" Subcategory : contains
 Subcategory "1" -- "0..*" Event : classifies
-User "1" -- "0..*" Event : creates
-Event "1" -- "0..*" EventParticipant : has participants
-User "1" -- "0..*" EventParticipant : joins
-Event "1" -- "0..*" Comment : has comments
-User "1" -- "0..*" Comment : writes
+User "1" -- "0..*" Event : creator
+Event "0..*" -- "0..*" User : participants
+Comment "0..*" -- "1" Event : event
+User "1" -- "0..*" Comment : author
+User "1" -- "0..*" Report : reporter
+Event "0..1" -- "0..*" Report : reported event
+Comment "0..1" -- "0..*" Report : reported comment
+
+note "A report targets exactly one\nevent or one comment.\nUnique per (reporter, target)." as N1
+Report .. N1
 
 @enduml

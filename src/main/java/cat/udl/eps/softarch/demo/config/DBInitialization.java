@@ -1,10 +1,8 @@
 package cat.udl.eps.softarch.demo.config;
-import cat.udl.eps.softarch.demo.domain.Record;
 import cat.udl.eps.softarch.demo.domain.Category;
 import cat.udl.eps.softarch.demo.domain.Subcategory;
 import cat.udl.eps.softarch.demo.domain.User;
 import cat.udl.eps.softarch.demo.repository.CategoryRepository;
-import cat.udl.eps.softarch.demo.repository.RecordRepository;
 import cat.udl.eps.softarch.demo.repository.SubcategoryRepository;
 import cat.udl.eps.softarch.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,18 +20,15 @@ public class DBInitialization {
     @Value("${spring.profiles.active:}")
     private String activeProfiles;
 
-    private final RecordRepository recordRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
 
     public DBInitialization(
             UserRepository userRepository,
-            RecordRepository recordRepository,
             CategoryRepository categoryRepository,
             SubcategoryRepository subcategoryRepository) {
         this.userRepository = userRepository;
-        this.recordRepository = recordRepository;
         this.categoryRepository = categoryRepository;
         this.subcategoryRepository = subcategoryRepository;
     }
@@ -61,12 +56,7 @@ public class DBInitialization {
                 user.setFullName("Test User");
                 user.setPassword(defaultPassword);
                 user.encodePassword();
-                user = userRepository.save(user);
-                cat.udl.eps.softarch.demo.domain.Record record = new Record();
-                record.setName("My test record");
-                record.setDescription("A record used for testing purposes, nothing more, nothing less...");
-                record.setOwnedBy(user);
-                recordRepository.save(record);
+                userRepository.save(user);
             }
         }
     }

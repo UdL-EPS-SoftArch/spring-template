@@ -9,7 +9,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -44,20 +43,17 @@ public class Report extends UriEntity<Long> {
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "reporter_id", nullable = false, updatable = false)
     @JsonIdentityReference(alwaysAsId = true)
     private User reporter;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", updatable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIdentityReference(alwaysAsId = true)
     private Event event;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id", updatable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIdentityReference(alwaysAsId = true)
     private Comment comment;

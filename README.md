@@ -32,28 +32,75 @@ Backend REST service for the VibeCheck platform, built with Spring Boot.
 ```mermaid
 classDiagram
     class UriEntity {
+        <<abstract>>
         uri : String
+        version : Long
     }
 
-    class UserDetails
-    <<interface>> UserDetails
+    class UserDetails {
+        <<interface>>
+    }
 
-    class User  {
+    class User {
         username : String
-        password : String
+        fullName : String
         email : String
+        password : String
+        admin : boolean
+        suspended : boolean
     }
 
-    class Record {
-        id: Long
-        name: String
-        description: String
-        created: ZonedDateTime
-        modified: ZonedDateTime
-        status: Status
+    class Category {
+        id : Long
+        name : String
     }
+
+    class Subcategory {
+        id : Long
+        name : String
+    }
+
+    class Event {
+        id : Long
+        title : String
+        description : String
+        address : String
+        dateTime : LocalDateTime
+        maxParticipants : Integer
+        estimatedCost : BigDecimal
+        created : Instant
+        modified : Instant
+    }
+
+    class Comment {
+        id : Long
+        content : String
+        createdAt : Instant
+    }
+
+    class Report {
+        id : Long
+        createdAt : Instant
+    }
+
 
     UriEntity <|-- User
-    UserDetails <|-- User
-    UriEntity <|-- Record
-    User "1" <-- "*" Record: ownedBy
+    UriEntity <|-- Category
+    UriEntity <|-- Subcategory
+    UriEntity <|-- Event
+    UriEntity <|-- Comment
+    UriEntity <|-- Report
+    UserDetails <|.. User
+
+    Subcategory "0..*" --> "1" Category : category
+    Event "0..*" --> "1" Subcategory : subcategory
+    Event "0..*" --> "1" User : creator
+    Event "0..*" --> "0..*" User : participants
+    Comment "0..*" --> "1" Event : event
+    Comment "0..*" --> "1" User : author
+    Report "0..*" --> "1" User : reporter
+    Report "0..*" --> "0..1" Event : event
+    Report "0..*" --> "0..1" Comment : comment
+```
+
+A `Report` targets exactly one event or one comment; deleting the target also deletes its reports.
