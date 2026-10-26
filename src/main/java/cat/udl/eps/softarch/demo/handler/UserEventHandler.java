@@ -40,13 +40,14 @@ public class UserEventHandler {
 
     @HandleBeforeCreate
     public void handleUserPreCreate(User user) {
+        user.setAdmin(false);
         logger.info("Before creating: {}", user.toString());
     }
 
     @HandleBeforeSave
     public void handleUserPreSave(User user) {
-        logger.info("Before updating: {}", user.toString());
         ensureSelfOrAdmin(user);
+        logger.info("Before updating: {}", user.toString());
         encodeNewPassword(user);
     }
 
@@ -68,8 +69,8 @@ public class UserEventHandler {
 
     @HandleBeforeDelete
     public void handleUserPreDelete(User user) {
-        logger.info("Before deleting: {}", user.toString());
         ensureSelfOrAdmin(user);
+        logger.info("Before deleting: {}", user.toString());
     }
 
     private void ensureSelfOrAdmin(User user) {
@@ -106,4 +107,5 @@ public class UserEventHandler {
     public void handleUserPostLinkSave(User user, Object o) {
         logger.info("After linking: {} to {}", user.toString(), o.toString());
     }
+
 }

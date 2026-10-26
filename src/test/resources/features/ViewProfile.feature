@@ -27,3 +27,10 @@ Feature: View profile
     And I'm not logged in
     When I view the profile of "amina"
     Then The response code is 401
+
+
+  Scenario: A student cannot view the profile of a user that does not exist
+    Given There is a registered user with username "amina" and password "password" and email "amina@sample.app"
+    And I login as "amina" with password "password"
+    When I view the profile of "ghost"
+    Then The response code is 404

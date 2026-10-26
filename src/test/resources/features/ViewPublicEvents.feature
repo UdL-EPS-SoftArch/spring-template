@@ -18,3 +18,9 @@ Feature: View public events
     Given I'm not logged in
     When I view the event titled "Missing event"
     Then The response code is 404
+
+  Scenario: A visitor sees an empty list when there are no events
+    Given I'm not logged in
+    When I view the public events
+    Then The response code is 200
+    And the public events list is empty

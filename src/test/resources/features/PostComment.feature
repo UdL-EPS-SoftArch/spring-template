@@ -30,3 +30,9 @@ Feature: Post comment
     And I login as "luca" with password "password"
     When I post a comment with content "" on the event titled "Welcome picnic"
     Then The response code is 400
+
+  Scenario: A student cannot comment on an event that does not exist
+    Given There is a registered user with username "luca" and password "password" and email "luca@sample.app"
+    And I login as "luca" with password "password"
+    When I post a comment with content "Hello" on the event titled "Missing event"
+    Then The response code is 400
