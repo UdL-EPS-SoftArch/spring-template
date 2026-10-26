@@ -51,5 +51,8 @@ public class CommentEventHandler {
         if (!existingComment.getAuthor().getId().equals(authentication.getName())) {
             throw new AccessDeniedException("Only the comment author can modify or delete this comment");
         }
+        if (!allowAdmin && !existingComment.getEvent().getId().equals(comment.getEvent().getId())) {
+            throw new AccessDeniedException("The event of a comment cannot be changed");
+        }
     }
 }

@@ -28,18 +28,20 @@ public class WebSecurityConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers(HttpMethod.GET, "/identity").authenticated()
-                .requestMatchers(HttpMethod.GET, "/users").authenticated()
-                .requestMatchers(HttpMethod.POST, "/users").anonymous()
-                .requestMatchers(HttpMethod.POST, "/users/*").denyAll()
                 .requestMatchers("/users/*/suspension").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/users").anonymous()
+                .requestMatchers(HttpMethod.POST, "/users/**").denyAll()
+                .requestMatchers(HttpMethod.PUT, "/users/**").authenticated()
+                .requestMatchers(HttpMethod.PATCH, "/users/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/reports", "/reports/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/reports/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/reports/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/reports/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/categories", "/subcategories").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/*").authenticated()     // Collection creation, e.g. POST /events
-                .requestMatchers(HttpMethod.GET, "/records").permitAll()    // Allow listing public records
-                .requestMatchers(HttpMethod.GET, "/records/*").permitAll()  // Allow retrieving public records
+                .requestMatchers("/events/*/participants", "/events/*/participants/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/events", "/events/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/events").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/events/**").authenticated()
@@ -60,7 +62,6 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.PATCH, "/*/*").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/*/*").authenticated()
-                .requestMatchers("/events/*/participants").authenticated()  // Join and leave events
                 .anyRequest().permitAll())
             .csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

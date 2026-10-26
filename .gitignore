@@ -36,5 +36,9 @@ build/
 ### Aider ###
 .aider*
 
+<<<<<<< Updated upstream
 ### Claude Code ###
 CLAUDE.md
+=======
+apache-maven-3.10.0-bin/
+>>>>>>> Stashed changes
