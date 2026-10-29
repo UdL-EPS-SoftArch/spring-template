@@ -154,6 +154,8 @@ public class JoinLeaveEventsStepDefs {
                         startLine.await();
                         return stepDefs.mockMvc.perform(
                                 post(uri)
+                                    .contentType(URI_LIST)
+                                    .content(userUri(username))
                                     .accept(MediaType.APPLICATION_JSON)
                                     .with(httpBasic(username, DEFAULT_PASSWORD)))
                             .andReturn().getResponse().getStatus();
@@ -167,9 +169,9 @@ public class JoinLeaveEventsStepDefs {
         }
     }
 
-    @Then("the two join attempts are answered with 201 and 409")
-    public void theTwoJoinAttemptsAreAnsweredWith201And409() {
-        assertEquals(List.of(201, 409), concurrentJoinStatuses.stream().sorted().toList());
+    @Then("the two join attempts are answered with 204 and 409")
+    public void theTwoJoinAttemptsAreAnsweredWith204And409() {
+        assertEquals(List.of(204, 409), concurrentJoinStatuses.stream().sorted().toList());
     }
 
     @Then("the event titled {string} has {int} participant(s) in the database")

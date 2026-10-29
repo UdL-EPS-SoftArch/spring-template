@@ -49,7 +49,7 @@ Feature: Join event
     And There is a registered user with username "sam" and password "password" and email "sam@sample.app"
     And an event titled "Welcome picnic" with maximum 1 participant exists and is owned by "amina"
     When "luca" and "sam" try to join the event titled "Welcome picnic" at the same time
-    Then the two join attempts are answered with 201 and 409
+    Then the two join attempts are answered with 204 and 409
     And the event titled "Welcome picnic" has 1 participant in the database
 
   Scenario: A student cannot join an event that does not exist

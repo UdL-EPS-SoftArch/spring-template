@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.demo.handler;
 
 import cat.udl.eps.softarch.demo.domain.Event;
 import cat.udl.eps.softarch.demo.domain.User;
+import cat.udl.eps.softarch.demo.repository.EventRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.data.rest.core.annotation.*;
@@ -20,8 +21,11 @@ public class EventEventHandler {
 
     private final EntityManagerFactory entityManagerFactory;
 
-    public EventEventHandler(EntityManagerFactory entityManagerFactory) {
+    private final EventRepository eventRepository;
+
+    public EventEventHandler(EntityManagerFactory entityManagerFactory, EventRepository eventRepository) {
         this.entityManagerFactory = entityManagerFactory;
+        this.eventRepository = eventRepository;
     }
 
     @HandleBeforeCreate
@@ -46,6 +50,7 @@ public class EventEventHandler {
             return;
         }
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        eventRepository.findByIdForUpdate(event.getId());
         Set<String> before = persistedParticipants(event.getId());
         Set<String> after = usernames(event.getParticipants());
 
@@ -55,7 +60,9 @@ public class EventEventHandler {
         if (!changed.stream().allMatch(username::equals)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only join or leave an event yourself");
         }
-        if (after.size() > before.size() && after.size() > event.getMaxParticipants()) {
+        Set<String> joined = new HashSet<>(after);
+        joined.removeAll(before);
+        if (!joined.isEmpty() && before.size() + joined.size() > event.getMaxParticipants()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Event is full");
         }
     }

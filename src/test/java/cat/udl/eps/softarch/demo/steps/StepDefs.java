@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cat.udl.eps.softarch.demo.DemoApplication;
+import cat.udl.eps.softarch.demo.config.ParticipationTransactionFilter;
 import cat.udl.eps.softarch.demo.config.UsernameImmutabilityFilter;
 import tools.jackson.databind.ObjectMapper;
 import io.cucumber.java.Before;
@@ -51,7 +52,8 @@ public class StepDefs {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(this.wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
-                .addFilters(this.wac.getBean(UsernameImmutabilityFilter.class))
+                .addFilters(this.wac.getBean(UsernameImmutabilityFilter.class),
+                        this.wac.getBean(ParticipationTransactionFilter.class))
                 .build();
     }
 
