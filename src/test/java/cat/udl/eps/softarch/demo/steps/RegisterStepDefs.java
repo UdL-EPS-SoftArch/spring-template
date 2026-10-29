@@ -50,7 +50,7 @@ public class RegisterStepDefs {
     AuthenticationStepDefs.currentPassword = password;
 
     stepDefs.result = stepDefs.mockMvc.perform(
-        get("/identity", username)
+        get("/identity")
             .accept(MediaType.APPLICATION_JSON)
             .with(AuthenticationStepDefs.authenticate()))
         .andDo(print())
@@ -63,7 +63,7 @@ public class RegisterStepDefs {
     AuthenticationStepDefs.currentPassword = password;
 
     stepDefs.result = stepDefs.mockMvc.perform(
-        get("/identity", username)
+        get("/identity")
             .accept(MediaType.APPLICATION_JSON)
             .with(AuthenticationStepDefs.authenticate()))
         .andDo(print())

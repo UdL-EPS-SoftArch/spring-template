@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.List;
 
@@ -21,5 +22,6 @@ public interface UserRepository extends CrudRepository<User, String>, PagingAndS
    * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
    */
 
+  @RestResource (exported = false)
   List<User> findByIdContaining(@Param("text") String text);
 }

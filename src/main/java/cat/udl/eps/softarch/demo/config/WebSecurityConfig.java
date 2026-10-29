@@ -27,18 +27,12 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers(HttpMethod.GET, "/identity").authenticated()
-                .requestMatchers(HttpMethod.GET, "/users").authenticated()
+                .requestMatchers(HttpMethod.GET, "/").permitAll()           // Allow API root discovery
                 .requestMatchers(HttpMethod.POST, "/users").anonymous()
                 .requestMatchers(HttpMethod.POST, "/users/*").denyAll()
                 .requestMatchers(HttpMethod.GET, "/records").permitAll()    // Allow listing public records
                 .requestMatchers(HttpMethod.GET, "/records/*").permitAll()  // Allow retrieving public records
-                .requestMatchers(HttpMethod.GET, "/*/*").authenticated()
-                .requestMatchers(HttpMethod.POST, "/*/*").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/*/*").authenticated()
-                .requestMatchers(HttpMethod.PATCH, "/*/*").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/*/*").authenticated()
-                .anyRequest().permitAll())
+                .anyRequest().authenticated())
             .csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors((cors) -> cors.configurationSource(corsConfigurationSource()))

@@ -13,6 +13,8 @@ import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
 import org.springframework.data.rest.core.annotation.HandleBeforeLinkSave;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,11 +37,19 @@ public class UserEventHandler {
     @HandleBeforeSave
     public void handleUserPreSave(User user) {
         logger.info("Before updating: {}", user.toString());
+        User current = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.getUsername().equals(current.getUsername())) {
+            throw new AccessDeniedException("Only the user itself can modify its own data");
+        }
     }
 
     @HandleBeforeDelete
     public void handleUserPreDelete(User user) {
         logger.info("Before deleting: {}", user.toString());
+        User current = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.getUsername().equals(current.getUsername())) {
+            throw new AccessDeniedException("Only the user itself can modify its own data");
+        }
     }
 
     @HandleBeforeLinkSave

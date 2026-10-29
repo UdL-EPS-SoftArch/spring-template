@@ -9,6 +9,8 @@ import jakarta.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -35,6 +37,7 @@ public class User extends UriEntity<String> implements UserDetails {
 	private String email;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@ToString.Exclude
 	@NotBlank
 	@Length(min = 8, max = 256)
 	private String password;
